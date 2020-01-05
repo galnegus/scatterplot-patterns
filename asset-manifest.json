@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/winglets-playground/static/css/main.b1d70775.chunk.css",
+    "main.js": "/winglets-playground/static/js/main.b9394338.chunk.js",
+    "main.js.map": "/winglets-playground/static/js/main.b9394338.chunk.js.map",
+    "runtime-main.js": "/winglets-playground/static/js/runtime-main.0f7cc633.js",
+    "runtime-main.js.map": "/winglets-playground/static/js/runtime-main.0f7cc633.js.map",
+    "static/js/2.d7ad8465.chunk.js": "/winglets-playground/static/js/2.d7ad8465.chunk.js",
+    "static/js/2.d7ad8465.chunk.js.map": "/winglets-playground/static/js/2.d7ad8465.chunk.js.map",
+    "index.html": "/winglets-playground/index.html",
+    "precache-manifest.e3f708b4584f6df1243512b7b3033541.js": "/winglets-playground/precache-manifest.e3f708b4584f6df1243512b7b3033541.js",
+    "service-worker.js": "/winglets-playground/service-worker.js",
+    "static/css/main.b1d70775.chunk.css.map": "/winglets-playground/static/css/main.b1d70775.chunk.css.map",
+    "static/js/2.d7ad8465.chunk.js.LICENSE": "/winglets-playground/static/js/2.d7ad8465.chunk.js.LICENSE"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.0f7cc633.js",
+    "static/js/2.d7ad8465.chunk.js",
+    "static/css/main.b1d70775.chunk.css",
+    "static/js/main.b9394338.chunk.js"
+  ]
+}
