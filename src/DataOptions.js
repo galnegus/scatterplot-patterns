@@ -83,7 +83,7 @@ export default function DataOptions({ scatterplot }) {
     <div>
       <Divider />
       <p className="bp3-text-muted" style={{ textAlign: 'center' }}>
-        Click on a cluster to show/hide.
+        Click on a cluster to show/hide options.
       </p>
       {renderClusterOptions}
       <div className="data-add-new">
