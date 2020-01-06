@@ -1,4 +1,13 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Winglets Playground
+
+Play around with Scatterplot Winglets!
+
+**Check it out:** https://galnegus.github.io/winglets-playground/
+
+This is an attempt to replicate the Winglets paper, with adjustable parameters: https://deardeer.github.io/pub/InfoVis19_Winglet.pdf
+
+The code for rendering the Winglets (and the scatterplot) is found at [https://github.com/galnegus/regl-scatterplot-winglets](galnegus/regl-scatterplot-winglets).
+
 
 ## Available Scripts
 

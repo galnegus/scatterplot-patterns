@@ -106,7 +106,7 @@ export default function ClusterOptions({ clusterKey, cluster, setCluster, remove
             stepSize={0.03}
             min={0}
             max={Math.PI}
-            labelStepSize={0.5}
+            labelStepSize={1}
             value={angle}
             onChange={angleChange}
             fill={true}
@@ -120,7 +120,7 @@ export default function ClusterOptions({ clusterKey, cluster, setCluster, remove
             stepSize={0.03}
             min={0}
             max={3}
-            labelStepSize={0.5}
+            labelStepSize={1}
             value={amplitude}
             onChange={amplitudeChange}
             fill={true}
@@ -131,9 +131,9 @@ export default function ClusterOptions({ clusterKey, cluster, setCluster, remove
         >
           <Slider
             stepSize={10}
-            min={10}
-            max={1000}
-            labelStepSize={200}
+            min={1}
+            max={10000}
+            labelStepSize={3333}
             value={n}
             onChange={nChange}
             fill={true}

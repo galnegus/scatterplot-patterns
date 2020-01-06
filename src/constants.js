@@ -3,9 +3,9 @@ export const defaultWingletsOptions = {
   showContours: false,
   lineWidth: 1,
   a: 0.01,
-  b: 0.08,
+  b: 0.06,
   n: 1,
-  contourDropoff: 0.1,
+  contourDropoff: 0.08,
 }
 
 export const defaultValues = {

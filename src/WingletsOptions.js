@@ -93,7 +93,7 @@ export default function WingletsOptions({ scatterplot }) {
         labelInfo={`(default: ${defaultValues.pointSize})`}
       >
         <Slider
-          stepSize={1}
+          stepSize={0.01}
           min={0}
           max={10}
           labelStepSize={2.5}
@@ -107,10 +107,10 @@ export default function WingletsOptions({ scatterplot }) {
         labelInfo={`(default: ${defaultValues.lineWidth})`}
       >
         <Slider
-          stepSize={0.2}
+          stepSize={0.05}
           min={0}
           max={5}
-          labelStepSize={1}
+          labelStepSize={1.25}
           value={lineWidth}
           onChange={lineWidthChange}
           fill={true}
@@ -136,48 +136,48 @@ export default function WingletsOptions({ scatterplot }) {
       <FormGroup
         label={(
           <span className="bp3-text-muted">
-            Winglet length = <b>A</b> + <b>B</b> * s(i)^<b>N</b>
+            Winglet length = <b>a</b> + <b>b</b> * s(i)^<b>n</b>
           </span>
         )}
         style={{ textAlign: 'center' }}
       >
         <FormGroup
-          label="A"
+          label="a"
           labelInfo={`(default: ${defaultValues.a})`}
           style={{ textAlign: 'left' }}
         >
           <Slider
-            stepSize={0.001}
+            stepSize={0.002}
             min={0}
-            max={0.1}
-            labelStepSize={0.025}
+            max={0.2}
+            labelStepSize={0.05}
             value={a}
             onChange={aChange}
             fill={true}
           />
         </FormGroup>
         <FormGroup
-          label="B"
+          label="b"
           labelInfo={`(default: ${defaultValues.b})`}
           style={{ textAlign: 'left' }}
         >
           <Slider
-            stepSize={0.01}
+            stepSize={0.002}
             min={0}
-            max={1}
-            labelStepSize={0.25}
+            max={0.2}
+            labelStepSize={0.05}
             value={b}
             onChange={bChange}
             fill={true}
           />
         </FormGroup>
         <FormGroup
-          label="N"
+          label="n"
           labelInfo={`(default: ${defaultValues.n})`}
           style={{ textAlign: 'left' }}
         >
           <Slider
-            stepSize={0.5}
+            stepSize={0.03}
             min={0}
             max={3}
             labelStepSize={1}
