@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Divider } from '@blueprintjs/core';
+import { Divider, Button, Intent } from '@blueprintjs/core';
 import dataGen from './dataGen';
 import ClusterOptions from './ClusterOptions';
 
@@ -24,15 +24,14 @@ const defaultCluster = (category) => {
 
 // gives you a new key when you call it.
 const keyGen = (() => {
-  let i = 1;
+  let i = 3;
   return () => i++;
 })();
 
 export default function DataOptions({ scatterplot }) {
   const [clusters, setClusters] = useState({
-    [keyGen()]: defaultCluster(0),
-    [keyGen()]: defaultCluster(0),
-    [keyGen()]: defaultCluster(3)
+    1: defaultCluster(0),
+    2: defaultCluster(1)
   });
 
   useEffect(() => {
@@ -58,19 +57,47 @@ export default function DataOptions({ scatterplot }) {
     return otherKeys;
   });
 
+  const unusedCategory = () => {
+    const usedCategories = new Set();
+    Object.keys(clusters).forEach((clusterKey) => usedCategories.add(clusters[clusterKey].category));
+
+    for (let i = 0; i < 10; ++i) {
+      if (!usedCategories.has(i)) return i;
+    }
+    return 0;
+  }
+
+  const addClickHandler = () => addCluster(unusedCategory());
+
   const renderClusterOptions = Object.keys(clusters).map((clusterKey) => (
     <ClusterOptions
       key={clusterKey}
       clusterKey={clusterKey}
       cluster={clusters[clusterKey]}
       setCluster={createSetCluster(clusterKey)}
+      removeCluster={removeCluster}
     />
   ));
 
   return (
     <div>
       <Divider />
+      <p className="bp3-text-muted" style={{ textAlign: 'center' }}>
+        Click on a cluster to show/hide.
+      </p>
       {renderClusterOptions}
+      <div className="data-add-new">
+        <Button intent={Intent.PRIMARY} onClick={addClickHandler}>
+          Add cluster
+        </Button>
+      </div>
+
+      <style jsx>{`
+        .data-add-new {
+          margin: 10px 0;
+          text-align: center;
+        }
+      `}</style>
     </div>
   );
 }
