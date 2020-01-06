@@ -29,7 +29,7 @@ function boxMuller(x, y, sigma, a, k) {
   return [z0 * sigma + x, z1 * sigma + y];
 }
 
-export default function gen({ x = 0, y = 0, sigma, angle = 0, amplitude = 2, n, category }) {
+export default function dataGen({ x = 0, y = 0, sigma, angle = 0, amplitude = 2, n, category }) {
   const data = [];
 
   // generate normal distribution from uniform distribution using box muller algorithm and stretch it so it's elliptic
