@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.js": "/winglets-playground/static/js/main.e329f266.chunk.js",
-    "main.js.map": "/winglets-playground/static/js/main.e329f266.chunk.js.map",
+    "main.js": "/winglets-playground/static/js/main.f16ea292.chunk.js",
+    "main.js.map": "/winglets-playground/static/js/main.f16ea292.chunk.js.map",
     "runtime-main.js": "/winglets-playground/static/js/runtime-main.0f7cc633.js",
     "runtime-main.js.map": "/winglets-playground/static/js/runtime-main.0f7cc633.js.map",
     "static/js/2.502e7a34.chunk.js": "/winglets-playground/static/js/2.502e7a34.chunk.js",
     "static/js/2.502e7a34.chunk.js.map": "/winglets-playground/static/js/2.502e7a34.chunk.js.map",
     "index.html": "/winglets-playground/index.html",
-    "precache-manifest.d32005c563c49e5d1063b55b42f53da5.js": "/winglets-playground/precache-manifest.d32005c563c49e5d1063b55b42f53da5.js",
+    "precache-manifest.ef5dc67df11a5a61c6f3fa251502b237.js": "/winglets-playground/precache-manifest.ef5dc67df11a5a61c6f3fa251502b237.js",
     "service-worker.js": "/winglets-playground/service-worker.js",
     "static/js/2.502e7a34.chunk.js.LICENSE": "/winglets-playground/static/js/2.502e7a34.chunk.js.LICENSE"
   },
   "entrypoints": [
     "static/js/runtime-main.0f7cc633.js",
     "static/js/2.502e7a34.chunk.js",
-    "static/js/main.e329f266.chunk.js"
+    "static/js/main.f16ea292.chunk.js"
   ]
 }
