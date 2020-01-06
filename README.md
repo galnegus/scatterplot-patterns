@@ -2,11 +2,13 @@
 
 Play around with Scatterplot Winglets!
 
+![Cool winglets](https://user-images.githubusercontent.com/5460138/71853825-c7b9c380-30dc-11ea-9901-93321510d1d7.png)
+
 **Check it out:** https://galnegus.github.io/winglets-playground/
 
 This is an attempt to replicate the Winglets paper, with adjustable parameters: https://deardeer.github.io/pub/InfoVis19_Winglet.pdf
 
-The code for rendering the Winglets (and the scatterplot) is found at [https://github.com/galnegus/regl-scatterplot-winglets](galnegus/regl-scatterplot-winglets).
+The code for rendering the Winglets (and the scatterplot) is found at https://github.com/galnegus/regl-scatterplot-winglets
 
 
 ## Available Scripts
