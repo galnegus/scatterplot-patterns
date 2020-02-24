@@ -60,53 +60,60 @@ export default function ClusterOptions({ clusterKey, cluster, setCluster, remove
       <ClusterHeader clusterKey={clusterKey} category={category} setIsOpen={setIsOpen} isOpen={isOpen} />
       <Collapse isOpen={isOpen}>
         <FormGroup
-          label="Mean x position"
+          label="X-pos"
+          inline={true}
         >
           <Slider
             stepSize={0.01}
             min={-1}
             max={1}
-            labelStepSize={0.5}
+            labelPrecision={1}
+            labelStepSize={2}
             value={x}
             onChange={xChange}
             fill={true}
           />
         </FormGroup>
         <FormGroup
-          label="Mean y position"
+          label="Y-pos"
+          inline={true}
         >
           <Slider
             stepSize={0.01}
             min={-1}
             max={1}
-            labelStepSize={0.5}
+            labelPrecision={1}
+            labelStepSize={2}
             value={y}
             onChange={yChange}
             fill={true}
           />
         </FormGroup>
         <FormGroup
-          label="Standard deviation"
+          label="Std. Dev."
+          inline={true}
         >
           <Slider
             stepSize={0.01}
             min={0}
             max={0.8}
-            labelStepSize={0.2}
+            labelPrecision={1}
+            labelStepSize={0.8}
             value={sigma}
             onChange={sigmaChange}
             fill={true}
           />
         </FormGroup>
         <FormGroup
-          label="Angle of rotation"
-          labelInfo="(in radians)"
+          label="Angle"
+          inline={true}
         >
           <Slider
             stepSize={0.03}
             min={0}
             max={Math.PI}
-            labelStepSize={1}
+            labelPrecision={1}
+            labelStepSize={Math.PI}
             value={angle}
             onChange={angleChange}
             fill={true}
@@ -114,26 +121,28 @@ export default function ClusterOptions({ clusterKey, cluster, setCluster, remove
         </FormGroup>
         <FormGroup
           label="Amplitude"
-          labelInfo="(x-radius / y-radius)"
+          inline={true}
         >
           <Slider
             stepSize={0.03}
             min={0}
             max={3}
-            labelStepSize={1}
+            labelPrecision={1}
+            labelStepSize={3}
             value={amplitude}
             onChange={amplitudeChange}
             fill={true}
           />
         </FormGroup>
         <FormGroup
-          label="Number of points"
+          label="Points"
+          inline={true}
         >
           <Slider
             stepSize={10}
             min={1}
             max={10000}
-            labelStepSize={3333}
+            labelStepSize={9999}
             value={n}
             onChange={nChange}
             fill={true}
@@ -141,12 +150,13 @@ export default function ClusterOptions({ clusterKey, cluster, setCluster, remove
         </FormGroup>
         <FormGroup
           label="Category"
+          inline={true}
         >
           <Slider
             stepSize={1}
             min={0}
             max={9}
-            labelStepSize={2}
+            labelStepSize={9}
             value={category}
             onChange={categoryChange}
             fill={true}

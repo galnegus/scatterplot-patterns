@@ -10,6 +10,19 @@ export default function Meta() {
           width: 100%;
           height: 100%;
         }
+
+        .bp3-collapse-body {
+          padding: 10px 0;
+        }
+
+        .bp3-form-group {
+          margin-bottom: 5px;
+        }
+
+        .bp3-form-group.bp3-inline label.bp3-label {
+          margin-right: 20px;
+          min-width: 70px;
+        }
       `}</style>
     </>
   );

@@ -1,9 +1,10 @@
 import React, { useCallback, useState } from 'react';
-import createScatterplot from './winglets/regl-scatterplot-winglets.esm.min.js';
+import createScatterplot from './scatterplot';
 import dataGen from './dataGen';
 import Sidebar from './Sidebar';
 import Meta from './Meta';
-import { defaultWingletsOptions, defaultValues, colorsCool } from './constants';
+import { defaultValues, colorsCool } from './constants';
+import { ThemeContext, DataContext } from './contexts';
 
 function initScatterplot(canvas, setScatterplot) {
   let { width, height } = canvas.getBoundingClientRect();
@@ -23,7 +24,6 @@ function initScatterplot(canvas, setScatterplot) {
     pointSize,
     showRecticle,
     recticleColor,
-    wingletsOptions: defaultWingletsOptions
   });
 
   const resizeHandler = () => {
@@ -59,50 +59,63 @@ function initScatterplot(canvas, setScatterplot) {
 
 function App() {
   const [scatterplot, setScatterplot] = useState(null);
+  const [isDarkTheme, setIsDarkTheme] = useState(true);
+  const [maxCategories, setMaxCategories] = useState(0);
 
   const canvasRef = useCallback((canvas) => {
     initScatterplot(canvas, setScatterplot);
   }, [setScatterplot]);
+
+  const toggleTheme = () => setIsDarkTheme((prev) => !prev);
   
+  //const darkBg = '#10161A';
+  const darkBg = '#000000';
+  //const lightBg = '#efefef';
+  const lightBg = '#ffffff';
+
   return (
-    <div className="App">
-      <Meta />
-      <div className="content">
-        <div className="canvas-wrapper">
-          <canvas className="canvas" ref={canvasRef}></canvas>
+    <ThemeContext.Provider value={{isDarkTheme, toggleTheme}}>
+      <DataContext.Provider value={{maxCategories, setMaxCategories}}>
+        <div className="App">
+          <Meta />
+          <div className="content">
+            <div className="canvas-wrapper">
+              <canvas className="canvas" ref={canvasRef}></canvas>
+            </div>
+          </div>
+          <Sidebar scatterplot={scatterplot} />
+          <style jsx>{`
+            .App {
+              background-color: ${isDarkTheme ? darkBg : lightBg};
+              width: 100%;
+              height: 100%;
+              position: relative;
+              display: flex;
+            }
+
+            .content {
+              flex-grow: 1;
+              height: 100%;
+              position: relative;
+            }
+
+            .canvas-wrapper {
+              position: absolute;
+              top: 0;
+              right: 0;
+              bottom: 0;
+              left: 0;
+            }
+
+            .canvas {
+              position: absolute;
+              width: 100%;
+              height: 100%;
+            }
+          `}</style>
         </div>
-      </div>
-      <Sidebar scatterplot={scatterplot} />
-      <style jsx>{`
-        .App {
-          background-color: #10161A;
-          width: 100%;
-          height: 100%;
-          position: relative;
-          display: flex;
-        }
-
-        .content {
-          flex-grow: 1;
-          height: 100%;
-          position: relative;
-        }
-
-        .canvas-wrapper {
-          position: absolute;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          left: 0;
-        }
-
-        .canvas {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-        }
-      `}</style>
-    </div>
+      </DataContext.Provider>
+    </ThemeContext.Provider>
   );
 }
 

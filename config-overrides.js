@@ -10,5 +10,13 @@ module.exports = override(
         type: 'scoped'
       }
     }]
+  }),
+  addWebpackModuleRule({
+    test: /\.(vs|fs)$/i,
+    use: ['babel-loader']
+  }),
+  addWebpackModuleRule({
+    test: /\.(vert|frag)$/i,
+    use: 'raw-loader',
   })
 );

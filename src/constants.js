@@ -1,17 +1,6 @@
-export const defaultWingletsOptions = {
-  showWinglets: true,
-  showContours: false,
-  lineWidth: 1,
-  a: 0.01,
-  b: 0.06,
-  n: 1,
-  contourDropoff: 0.08,
-}
-
 export const defaultValues = {
   useColors: true,
   pointSize: 5,
-  ...defaultWingletsOptions
 };
 
 // https://blueprintjs.com/docs/#core/colors
