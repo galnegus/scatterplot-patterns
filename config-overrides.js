@@ -17,6 +17,10 @@ module.exports = override(
   }),
   addWebpackModuleRule({
     test: /\.(vert|frag)$/i,
-    use: 'raw-loader',
+    exclude: /node_modules/,
+    use: [
+      'raw-loader',
+      'glslify-loader'
+    ]
   })
 );

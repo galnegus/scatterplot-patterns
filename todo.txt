@@ -1,0 +1,36 @@
+TODO:
+
+Technical fixes
+  - Fix point hover/select
+  - Fix texture atlas resolution sizes
+  - Fix option data model so that it syncs up
+  - Fix pattern option so that it doesn't show inactive class patterns
+  - Generalize the texture pixel extraction stuff in point.vert => move to function
+Method improvements
+  - Add filter for phases? (i.e. how many thingies per cycle, for example 2 pulse waves per cycle instead of 1, or 1.5 (hard?))
+    - One way to do it might be to compute mathematically, where are the cycles at this point in time? And then to pick the two that are the closest to the given point, because it can only be one of the closest two! Compute the value at those two and pick the biggest!
+      - Have an "emission rate", e_r, set up emission points with the interval e_r covering the range [-1, 2]. To find neighbours for a point x, first subtract the current u_time from x (so equivalent to u_time = 0) and then multiply x with e_r, the neighbouring points are given by floor(x) and ceil(x) and then downscaling the results by dividing with e_r again.
+  - Add third pattern (???)
+    - Idea: A vortex, very similar to radar but doesn't move according to radius, instead moves both radius and angle over time, also has a bandwidth.
+    - Idea: Random noise, ideally it smoothly transition between different noisy patterns, so it doesn't just jump between frames
+  - Encode some information in the alpha channel of the pattern?
+  - Consider using saturation instead of value?
+    - Add check boxes to filters to select whether to modulate:
+      - Saturation
+      - Value
+      - Alpha/Depth
+  - Implement hue range for color selection
+  - Radar max value?
+Other shit
+  - Data import 
+  - Visualize gauss function in pattern options
+
+
+DONE:
+
+Technical fixes
+  - Fix bbox so that it actually sets the furtherst point at = 1., i.e. euclidean distance instead of manhattan distance
+Method improvements
+  - Add filter for time
+  - Add filter for direction (in/out, forward/backward)
+Other shit

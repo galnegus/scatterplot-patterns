@@ -13,20 +13,25 @@ const keyGen = (() => {
 const defaultPulse = (category) => ({
   type: PATTERN_TYPES.PULSE,
   category,
+  hsvColor: [Math.random(), 1, 1],
   a: 1,
   c1: 0.1,
   c2: 0.2,
   minValue: 0.2,
-  hsvColor: [Math.random(), 1, 1],
+  cyclesPerSecond: 1,
+  wavesPerCycle: 1,
+  direction: 1,
 });
 
 const defaultRadar = (category) => ({
   type: PATTERN_TYPES.RADAR,
   category,
+  hsvColor: [Math.random(), 1, 1],
   gamma1: 5,
   gamma2: 5,
   minValue: 0.2,
-  hsvColor: [Math.random(), 1, 1],
+  cyclesPerSecond: 1,
+  direction: 1,
 });
 
 export default function DataOptions({ scatterplot }) {

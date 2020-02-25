@@ -32,28 +32,7 @@ function initScatterplot(canvas, setScatterplot) {
   };
   window.addEventListener('resize', resizeHandler);
 
-  const generatePoints = (num, category) => {
-    const sigma = Math.random() / 3 + 0.1;
-    const max = 1 - sigma * 2 - 0.2; // want x, y mean in interval (-max, max) to avoid points outside of canvas boundary.
-
-    return dataGen({
-      x: Math.random() * max * 2 - max,
-      y: Math.random() * max * 2 - max,
-      sigma,
-      angle: Math.random() * Math.PI,
-      amplitude: Math.random(),
-      n: num,
-      category
-    });
-  };
-
   scatterplot.set({ colorBy: 'category', colors: colorsCool });
-
-  const points = new Array(2)
-    .fill()
-    .map((_, i) => generatePoints(100, i))
-    .reduce((acc, curr) => acc.concat(curr), []);
-  scatterplot.draw(points);
   setScatterplot(scatterplot);
 }
 

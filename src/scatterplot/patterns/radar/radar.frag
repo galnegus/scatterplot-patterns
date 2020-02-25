@@ -1,5 +1,8 @@
 precision mediump float;
 
+#pragma glslify: when_gt = require(glsl-conditionals/when_gt)
+#pragma glslify: when_le = require(glsl-conditionals/when_le) 
+
 uniform vec3 u_hsvColor;
 uniform vec2 u_resolution;
 uniform float u_time;
@@ -7,6 +10,9 @@ uniform float u_time;
 uniform float u_gamma1;
 uniform float u_gamma2;
 uniform float u_minValue;
+uniform float u_cyclesPerSecond;
+uniform float u_nSpokes;
+uniform float u_direction;
 
 varying vec2 v_min;
 varying vec2 v_max;
@@ -25,21 +31,20 @@ vec3 hsv2rgb_smooth( in vec3 c ) {
 float angleDistance(in float a, in float b, out float gamma) {
   float diff1 = mod((a - b), TAU);
   float diff2 = mod((b - a), TAU);
-  if (diff1 < diff2) {
-    gamma = u_gamma2;
-    return diff1; // play around with sign to change direction etc
-  } else {
-    gamma = u_gamma1;
-    return diff2; // play around with sign to change direction etc
-  }
+
+  float d1_less_equal_d2 = when_le(diff1, diff2);
+  float d1_greater_than_d2 = when_gt(diff1, diff2);
+
+  gamma = d1_less_equal_d2 * u_gamma2 + d1_greater_than_d2 * u_gamma1;
+  return d1_less_equal_d2 * diff1 + d1_greater_than_d2 * diff2;
 }
 
 void main() {
   vec2 normalizedFragCoord = (gl_FragCoord.xy / u_resolution - v_min) / (v_max - v_min);
 
-  float fastTime = pow(u_time, 0.9);
+  float scaledTime = u_direction * u_time * u_cyclesPerSecond;
 
-  float timeAngle = fastTime * TAU;
+  float timeAngle = scaledTime * TAU;
 
   vec2 diff = normalizedFragCoord - vec2(0.5, 0.5);
   float fragAngle = atan(diff.x, diff.y) + PI; // from [-pi, pi] to [0, 2pi]

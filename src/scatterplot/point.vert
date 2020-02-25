@@ -1,5 +1,8 @@
 precision mediump float;
 
+#pragma glslify: when_gt = require(glsl-conditionals/when_gt)
+#pragma glslify: when_le = require(glsl-conditionals/when_le)
+
 uniform sampler2D colorTex;
 uniform float colorTexRes;
 uniform sampler2D stateTex;
@@ -43,8 +46,8 @@ vec2 texAtlasIndex(in float index, in vec2 position) {
   float yIndex = floor((modIndex + 0.5) / atlasSize.x);
   float xIndex = modI(modIndex, atlasSize.x);
 
-  float yStep = 1.0 / float(atlasSize.y);
-  float xStep = 1.0 / float(atlasSize.x);
+  float yStep = 1.0 / atlasSize.y;
+  float xStep = 1.0 / atlasSize.x;
 
   vec2 min = vec2(xIndex * xStep, yIndex * yStep);
   vec2 max = vec2((xIndex + 1.0) * xStep, (yIndex + 1.0) * yStep);
@@ -53,6 +56,7 @@ vec2 texAtlasIndex(in float index, in vec2 position) {
 }
 
 vec4 findColor(in float category) {
+  // this should be generalizable
   float eps = 0.5 / bboxTexRes;
   float bboxRowIndex = floor((category + eps) / bboxTexRes);
   vec2 bboxTexIndex = vec2(
@@ -72,11 +76,16 @@ vec4 findColor(in float category) {
   vec2 min = bbox.xy;
   vec2 max = bbox.zw;
   vec2 normalizedPosition = (uv - min) / (max - min);
-  if (aspectRatio > 1.0) {
-    normalizedPosition.y = (normalizedPosition.y - 0.5) / aspectRatio + 0.5;
-  } else {
-    normalizedPosition.x = aspectRatio * (normalizedPosition.x - 0.5) + 0.5;
-  }
+
+  // faster than conditionals apparently?
+  float aspectRatio_gt_1 = when_gt(aspectRatio, 1.0);
+  float aspectRatio_le_1 = when_le(aspectRatio, 1.0);
+
+  normalizedPosition.y = aspectRatio_le_1 * normalizedPosition.y +
+    aspectRatio_gt_1 * ((normalizedPosition.y - 0.5) / aspectRatio + 0.5);
+  normalizedPosition.x = aspectRatio_gt_1 * normalizedPosition.x +
+    aspectRatio_le_1 * (aspectRatio * (normalizedPosition.x - 0.5) + 0.5);
+
   return texture2D(textureAtlas, texAtlasIndex(category, normalizedPosition));
 }
 

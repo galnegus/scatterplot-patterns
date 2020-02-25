@@ -151,12 +151,8 @@ const createScatterplot = ({
 
   let patternManager = new PatternManager(regl);
   patternManager.set(0, {
-    type: PATTERN_TYPES.RADAR,
-    hsvColor: [0.2, 1, 0.5],
-  });
-  patternManager.set(1, {
-    type: PATTERN_TYPES.PULSE,
-    hsvColor: [0.5, 1, 0.5],
+    type: PATTERN_TYPES.PLAIN,
+    color: [0.2, 1, 0.5, 1],
   });
 
   // Get a copy of the current mouse position
@@ -772,7 +768,7 @@ const createScatterplot = ({
     ];
   };
 
-  const computeBBox = (points) => {
+  const computeBBoxOld = (points) => {
     // first compute axis aligned minimum bounding box
     let minX = Number.MAX_VALUE;
     let minY = Number.MAX_VALUE;
@@ -805,6 +801,26 @@ const createScatterplot = ({
       centroid[1] - yDist,
       centroid[0] + xDist,
       centroid[1] + yDist,
+    ];
+  };
+
+  const computeBBox = (points) => {
+    const centroid = computeCentroid(points);
+
+    let maxSquaredDist = 0;
+    points.forEach((point) => {
+      const squaredDist = (centroid[0] - point[0]) ** 2 + (centroid[1] - point[1]) ** 2;
+      if (squaredDist > maxSquaredDist) maxSquaredDist = squaredDist;
+    });
+
+    const maxDist = Math.sqrt(maxSquaredDist);
+    
+    // returns [xMin, yMin, xMax, yMax]
+    return [
+      centroid[0] - maxDist,
+      centroid[1] - maxDist,
+      centroid[0] + maxDist,
+      centroid[1] + maxDist,
     ];
   };
 

@@ -24,21 +24,35 @@ export default function createRadarDraw(regl, fbo) {
       u_gamma1: regl.prop('u_gamma1'),
       u_gamma2: regl.prop('u_gamma2'),
       u_minValue: regl.prop('u_minValue'),
+      u_cyclesPerSecond: regl.prop('u_cyclesPerSecond'),
+      u_nSpokes: regl.prop('u_nSpokes'),
+      u_direction: regl.prop('u_direction'),
     },
     count: 6,
     framebuffer: fbo,
   });
 
-  return (fbo, atlasSize, atlasIndex, time, { hsvColor = [0.8, 1, 1], gamma1 = 5.0, gamma2 = 5.0, minValue = 0.2, }) => {
+  return (fbo, atlasSize, atlasIndex, time, {
+    hsvColor = [0.8, 1, 1],
+    gamma1 = 5.0,
+    gamma2 = 5.0,
+    minValue = 0.2,
+    cyclesPerSecond = 1,
+    nSpokes = 1,
+    direction = 1,
+  }) => {
     drawFn({
       u_resolution: [fbo.width, fbo.height],
       u_texAtlasSize: atlasSize,
       u_texAtlasIndex: atlasIndex,
-      u_time: (time * 0.5) % 1,
+      u_time: time,
       u_hsvColor: hsvColor,
       u_gamma1: gamma1,
       u_gamma2: gamma2,
       u_minValue: minValue,
+      u_cyclesPerSecond: cyclesPerSecond,
+      u_nSpokes: nSpokes,
+      u_direction: direction,
     });
   };
 }
