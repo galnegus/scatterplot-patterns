@@ -23,6 +23,7 @@ export default function createRadarDraw(regl, fbo) {
       u_hsvColor: regl.prop('u_hsvColor'),
       u_gamma1: regl.prop('u_gamma1'),
       u_gamma2: regl.prop('u_gamma2'),
+      u_maxValue: regl.prop('u_maxValue'),
       u_minValue: regl.prop('u_minValue'),
       u_cyclesPerSecond: regl.prop('u_cyclesPerSecond'),
       u_nSpokes: regl.prop('u_nSpokes'),
@@ -36,9 +37,10 @@ export default function createRadarDraw(regl, fbo) {
     hsvColor = [0.8, 1, 1],
     gamma1 = 5.0,
     gamma2 = 5.0,
+    maxValue = 1,
     minValue = 0.2,
     cyclesPerSecond = 1,
-    nSpokes = 1,
+    nSpokes = 2,
     direction = 1,
   }) => {
     drawFn({
@@ -49,6 +51,7 @@ export default function createRadarDraw(regl, fbo) {
       u_hsvColor: hsvColor,
       u_gamma1: gamma1,
       u_gamma2: gamma2,
+      u_maxValue: maxValue,
       u_minValue: minValue,
       u_cyclesPerSecond: cyclesPerSecond,
       u_nSpokes: nSpokes,

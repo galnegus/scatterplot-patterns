@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from 'react';
 import createScatterplot from './scatterplot';
-import dataGen from './dataGen';
 import Sidebar from './Sidebar';
 import Meta from './Meta';
 import { defaultValues, colorsCool } from './constants';

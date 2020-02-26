@@ -3,6 +3,8 @@ export const defaultValues = {
   pointSize: 5,
 };
 
+export const debounceTime = 100;
+
 // https://blueprintjs.com/docs/#core/colors
 export const colorsCool = [
   "#DB2C6F",

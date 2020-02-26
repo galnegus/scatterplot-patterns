@@ -21,7 +21,7 @@ export default class PatternManager {
     if (!regl) throw new Error('PatternManager must have reference to regl object.');
 
     this.fbo = regl.framebuffer({
-      width: 500, height: 500,
+      width: 1000, height: 500,
     });
     this.patternDraws = {
       [PATTERN_TYPES.PLAIN]: createPlainDraw(regl, this.fbo),
@@ -39,7 +39,7 @@ export default class PatternManager {
     this.atlasSize = [this.maxCategories, 1];
   }
 
-  // array of pattern options with the category as a property
+  // Input: array of pattern options with the category as a property
   setAll(patterns) {
     const categoriesToRemove = new Set(Object.keys(this.patterns));
 

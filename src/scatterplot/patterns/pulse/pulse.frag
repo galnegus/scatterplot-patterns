@@ -27,19 +27,15 @@ vec3 hsv2rgb_smooth( in vec3 c ) {
 }
 
 float gauss(in float diff) {
-  float c = u_c1 * when_gt(diff, 0.0) + u_c2 * when_le(diff, 0.0);
-  return u_a * exp(-pow(diff, 2.0)/(2.0 * c * c));
+  float coolDiff = diff / u_wavesPerCycle;
+  float c = u_c1 * when_gt(coolDiff, 0.0) + u_c2 * when_le(coolDiff, 0.0);
+  return u_a * exp(-pow(coolDiff, 2.0)/(2.0 * c * c));
 }
 
 void main() {
   vec2 normalizedFragCoord = (gl_FragCoord.xy / u_resolution - v_min) / (v_max - v_min); 
 
-  float dist = length(normalizedFragCoord - vec2(0.5, 0.5)) * 2.0;
-
-  float a = 1.0;
-  float c2 = 0.1;
-  float c1 = 0.05;
-  float minValue = 0.2;
+  float dist = distance(normalizedFragCoord, vec2(0.5, 0.5)) * 2.0;
 
   float scaledTime = u_direction * u_cyclesPerSecond * u_time;
 

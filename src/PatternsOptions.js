@@ -16,7 +16,7 @@ const defaultPulse = (category) => ({
   hsvColor: [Math.random(), 1, 1],
   a: 1,
   c1: 0.1,
-  c2: 0.2,
+  c2: 0.1,
   minValue: 0.2,
   cyclesPerSecond: 1,
   wavesPerCycle: 1,
@@ -29,15 +29,17 @@ const defaultRadar = (category) => ({
   hsvColor: [Math.random(), 1, 1],
   gamma1: 5,
   gamma2: 5,
+  maxValue: 1,
   minValue: 0.2,
   cyclesPerSecond: 1,
+  nSpokes: 2,
   direction: 1,
 });
 
 export default function DataOptions({ scatterplot }) {
   const [patterns, setPatterns] = useState({
-    1: defaultPulse(0),
-    2: defaultRadar(1)
+    1: defaultRadar(0),
+    2: defaultPulse(1)
   });
 
   const { maxCategories } = useContext(DataContext);

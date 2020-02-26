@@ -1,8 +1,5 @@
 precision mediump float;
 
-#pragma glslify: when_gt = require(glsl-conditionals/when_gt)
-#pragma glslify: when_le = require(glsl-conditionals/when_le)
-
 uniform sampler2D colorTex;
 uniform float colorTexRes;
 uniform sampler2D stateTex;
@@ -27,8 +24,6 @@ uniform vec2 atlasSize;
 
 uniform sampler2D bboxTex;
 uniform float bboxTexRes;
-uniform sampler2D aspectRatioTex;
-uniform float aspectRatioTexRes;
 
 // variables to send to the fragment shader
 varying vec4 color;
@@ -37,6 +32,16 @@ varying vec2 uv;
 float modI(float a, float b) {
   float m = a - floor((a + 0.5) / b) * b;
    return floor(m + 0.5);
+}
+
+vec4 getFromTexture(in sampler2D texture, in float textureRes, in float index) {
+  float eps = 0.5 / textureRes;
+  float rowIndex = floor((index + eps) / textureRes);
+  vec2 texIndex = vec2(
+    (index / textureRes) - rowIndex + eps,
+    rowIndex / textureRes
+  );
+  return texture2D(texture, texIndex);
 }
 
 vec2 texAtlasIndex(in float index, in vec2 position) {
@@ -57,48 +62,18 @@ vec2 texAtlasIndex(in float index, in vec2 position) {
 
 vec4 findColor(in float category) {
   // this should be generalizable
-  float eps = 0.5 / bboxTexRes;
-  float bboxRowIndex = floor((category + eps) / bboxTexRes);
-  vec2 bboxTexIndex = vec2(
-    (category / bboxTexRes) - bboxRowIndex + eps,
-    bboxRowIndex / bboxTexRes
-  );
-  vec4 bbox = texture2D(bboxTex, bboxTexIndex);
-
-  eps = 0.5 / aspectRatioTexRes;
-  float aspectRatioRowIndex = floor((category + eps) / aspectRatioTexRes);
-  vec2 aspectRatioTexIndex = vec2(
-    (category / aspectRatioTexRes) - aspectRatioRowIndex + eps,
-    aspectRatioRowIndex / aspectRatioTexRes
-  );
-  float aspectRatio = texture2D(aspectRatioTex, aspectRatioTexIndex).x;
+  vec4 bbox = getFromTexture(bboxTex, bboxTexRes, category);
 
   vec2 min = bbox.xy;
   vec2 max = bbox.zw;
   vec2 normalizedPosition = (uv - min) / (max - min);
-
-  // faster than conditionals apparently?
-  float aspectRatio_gt_1 = when_gt(aspectRatio, 1.0);
-  float aspectRatio_le_1 = when_le(aspectRatio, 1.0);
-
-  normalizedPosition.y = aspectRatio_le_1 * normalizedPosition.y +
-    aspectRatio_gt_1 * ((normalizedPosition.y - 0.5) / aspectRatio + 0.5);
-  normalizedPosition.x = aspectRatio_gt_1 * normalizedPosition.x +
-    aspectRatio_le_1 * (aspectRatio * (normalizedPosition.x - 0.5) + 0.5);
 
   return texture2D(textureAtlas, texAtlasIndex(category, normalizedPosition));
 }
 
 void main() {
   // First get the state
-  float eps = 0.5 / stateTexRes;
-  float stateRowIndex = floor((stateIndex + eps) / stateTexRes);
-  vec2 stateTexIndex = vec2(
-    (stateIndex / stateTexRes) - stateRowIndex + eps,
-    stateRowIndex / stateTexRes
-  );
-
-  vec4 state = texture2D(stateTex, stateTexIndex);
+  vec4 state = getFromTexture(stateTex, stateTexRes, stateIndex);
 
   uv = state.xy;
   gl_Position = projection * view * model * vec4(state.x, state.y, 0.0, 1.0);
@@ -111,7 +86,7 @@ void main() {
   // I.e., normal, active, hover, background, etc.
   colorIndex *= numColorStates;
   // Half a "pixel" or "texel" in texture coordinates
-  eps = 0.5 / colorTexRes;
+  float eps = 0.5 / colorTexRes;
   float colorLinearIndex = colorIndex + globalState;
   // Need to add cEps here to avoid floating point issue that can lead to
   // dramatic changes in which color is loaded as floor(3/2.9) = 1 but

@@ -9,6 +9,7 @@ uniform float u_time;
 
 uniform float u_gamma1;
 uniform float u_gamma2;
+uniform float u_maxValue;
 uniform float u_minValue;
 uniform float u_cyclesPerSecond;
 uniform float u_nSpokes;
@@ -28,9 +29,9 @@ vec3 hsv2rgb_smooth( in vec3 c ) {
   return c.z * mix( vec3(1.0), rgb, c.y);
 }
 
-float angleDistance(in float a, in float b, out float gamma) {
-  float diff1 = mod((a - b), TAU);
-  float diff2 = mod((b - a), TAU);
+float angleDifference(in float a, in float b, out float gamma) {
+  float diff1 = mod((a - b), TAU / u_nSpokes);
+  float diff2 = mod((b - a), TAU / u_nSpokes);
 
   float d1_less_equal_d2 = when_le(diff1, diff2);
   float d1_greater_than_d2 = when_gt(diff1, diff2);
@@ -46,13 +47,13 @@ void main() {
 
   float timeAngle = scaledTime * TAU;
 
-  vec2 diff = normalizedFragCoord - vec2(0.5, 0.5);
-  float fragAngle = atan(diff.x, diff.y) + PI; // from [-pi, pi] to [0, 2pi]
+  vec2 centerDist = normalizedFragCoord - vec2(0.5, 0.5);
+  float fragAngle = atan(centerDist.x, centerDist.y) + PI; // from [-pi, pi] to [0, 2pi]
   float gamma;
-  float value = clamp(angleDistance(fragAngle, timeAngle, gamma) / PI, 0.0, 1.0);
+  float angleDist = angleDifference(fragAngle, timeAngle, gamma) * u_nSpokes / PI;
 
-  value = pow(value, gamma);
-  value = value * (1.0 - u_minValue) + u_minValue;
+  float value = pow(1.0 - angleDist, gamma); // gamma
 
+  value = value * (u_maxValue - u_minValue) + u_minValue;
   gl_FragColor = vec4(hsv2rgb_smooth(vec3(u_hsvColor.xy, value)), 1.0);
 }

@@ -45,13 +45,6 @@ export default function PatternOptions({ patternKey, pattern, setPattern }) {
         {typeOptions}
         <Divider />
       </Collapse>
-
-      <style jsx>{`
-        .cluster-remove {
-          margin: 10px 0;
-          text-align: center;
-        }
-      `}</style>
     </div>
   );
 }

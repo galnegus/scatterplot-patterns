@@ -16,7 +16,7 @@ export default function Meta() {
         }
 
         .bp3-form-group {
-          margin-bottom: 5px;
+          margin-bottom: 0px;
         }
 
         .bp3-form-group.bp3-inline label.bp3-label {

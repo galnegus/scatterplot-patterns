@@ -144,9 +144,6 @@ const createScatterplot = ({
   let bboxTex;
   let bboxTexRes = 0;
 
-  let aspectRatioTex;
-  let aspectRatioTexRes = 0;
-
   let glBench;
 
   let patternManager = new PatternManager(regl);
@@ -516,8 +513,6 @@ const createScatterplot = ({
   const getAtlasSize = () => patternManager.getAtlasSize();
   const getBBoxTex = () => bboxTex;
   const getBBoxTexRes = () => bboxTexRes;
-  const getAspectRatioTex = () => aspectRatioTex;
-  const getAspectRatioTexRes = () => aspectRatioTexRes;
 
   const drawPoints = (
     getPointSizeExtra,
@@ -568,8 +563,6 @@ const createScatterplot = ({
         atlasSize: getAtlasSize,
         bboxTex: getBBoxTex,
         bboxTexRes: getBBoxTexRes,
-        aspectRatioTex: getAspectRatioTex,
-        aspectRatioTexRes: getAspectRatioTexRes,
       },
 
       count: getNumPoints,
@@ -735,24 +728,6 @@ const createScatterplot = ({
     });
   };
 
-  const createAspectRatioTexture = (aspectRatioByCategory) => {
-    const numCategories = Math.max(...Object.keys(aspectRatioByCategory)) + 1;
-    aspectRatioTexRes = Math.max(2, Math.ceil(Math.sqrt(numCategories)));
-    const data = new Float32Array(aspectRatioTexRes ** 2);
-    for (let i = 0; i < numCategories; i += 1) {
-      if (_has(aspectRatioByCategory, i))
-        data[i] = aspectRatioByCategory[i];
-      else
-        data[i] = 1;
-    }
-
-    return regl.texture({
-      data,
-      shape: [aspectRatioTexRes, aspectRatioTexRes, 1],
-      type: 'float',
-    });
-  };
-
   const computeCentroid = (points) => {
     let sumX = 0;
     let sumY = 0;
@@ -765,42 +740,6 @@ const createScatterplot = ({
     return [
       sumX / points.length,
       sumY / points.length,
-    ];
-  };
-
-  const computeBBoxOld = (points) => {
-    // first compute axis aligned minimum bounding box
-    let minX = Number.MAX_VALUE;
-    let minY = Number.MAX_VALUE;
-    let maxX = Number.MIN_VALUE;
-    let maxY = Number.MIN_VALUE;
-
-    const centroid = computeCentroid(points);
-
-    points.forEach((point) => {
-      const x = point[0];
-      const y = point[1];
-
-      if (x < minX) minX = x;
-      if (y < minY) minY = y;
-      if (x > maxX) maxX = x;
-      if (y > maxY) maxY = y;
-    });
-
-    let xMinDiff = Math.abs(centroid[0] - minX);
-    let xMaxDiff = Math.abs(centroid[0] - maxX);
-    const xDist = (xMinDiff > xMaxDiff ? xMinDiff : xMaxDiff);
-
-    let yMinDiff = Math.abs(centroid[1] - minY);
-    let yMaxDiff = Math.abs(centroid[1] - maxY);
-    const yDist = (yMinDiff > yMaxDiff ? yMinDiff : yMaxDiff);
-
-    // returns [xMin, yMin, xMax, yMax]
-    return [
-      centroid[0] - xDist,
-      centroid[1] - yDist,
-      centroid[0] + xDist,
-      centroid[1] + yDist,
     ];
   };
 
@@ -824,13 +763,6 @@ const createScatterplot = ({
     ];
   };
 
-  const computeBBoxAspectRatio = (coolBBox) => {
-    const width = Math.abs(coolBBox[2] - coolBBox[0]);
-    const height = Math.abs(coolBBox[3] - coolBBox[1]);
-
-    return width / height;
-  };
-
   const setPoints = newPoints => {
     isInit = false;
 
@@ -852,10 +784,7 @@ const createScatterplot = ({
 
     const pointsByCategory = _groupBy(newPoints, 2);
     const bboxByCategory = _mapValues(pointsByCategory, (_, category) => computeBBox(pointsByCategory[category]));
-    const aspectRatioByCategory = _mapValues(pointsByCategory, (_, category) => computeBBoxAspectRatio(bboxByCategory[category]));
-
     bboxTex = createBBoxTexture(bboxByCategory);
-    aspectRatioTex = createAspectRatioTexture(aspectRatioByCategory);
 
     isInit = true;
   };
