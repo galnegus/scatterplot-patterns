@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.js": "/winglets-playground/static/js/main.f16ea292.chunk.js",
-    "main.js.map": "/winglets-playground/static/js/main.f16ea292.chunk.js.map",
-    "runtime-main.js": "/winglets-playground/static/js/runtime-main.0f7cc633.js",
-    "runtime-main.js.map": "/winglets-playground/static/js/runtime-main.0f7cc633.js.map",
-    "static/js/2.502e7a34.chunk.js": "/winglets-playground/static/js/2.502e7a34.chunk.js",
-    "static/js/2.502e7a34.chunk.js.map": "/winglets-playground/static/js/2.502e7a34.chunk.js.map",
-    "index.html": "/winglets-playground/index.html",
-    "precache-manifest.ef5dc67df11a5a61c6f3fa251502b237.js": "/winglets-playground/precache-manifest.ef5dc67df11a5a61c6f3fa251502b237.js",
-    "service-worker.js": "/winglets-playground/service-worker.js",
-    "static/js/2.502e7a34.chunk.js.LICENSE": "/winglets-playground/static/js/2.502e7a34.chunk.js.LICENSE"
+    "main.js": "/scatterplot-patterns/static/js/main.0daadf20.chunk.js",
+    "main.js.map": "/scatterplot-patterns/static/js/main.0daadf20.chunk.js.map",
+    "runtime-main.js": "/scatterplot-patterns/static/js/runtime-main.d94e56ed.js",
+    "runtime-main.js.map": "/scatterplot-patterns/static/js/runtime-main.d94e56ed.js.map",
+    "static/js/2.5d7e8eae.chunk.js": "/scatterplot-patterns/static/js/2.5d7e8eae.chunk.js",
+    "static/js/2.5d7e8eae.chunk.js.map": "/scatterplot-patterns/static/js/2.5d7e8eae.chunk.js.map",
+    "index.html": "/scatterplot-patterns/index.html",
+    "precache-manifest.bb44fd49021d38acc37ef0ca30cd9652.js": "/scatterplot-patterns/precache-manifest.bb44fd49021d38acc37ef0ca30cd9652.js",
+    "service-worker.js": "/scatterplot-patterns/service-worker.js",
+    "static/js/2.5d7e8eae.chunk.js.LICENSE.txt": "/scatterplot-patterns/static/js/2.5d7e8eae.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.0f7cc633.js",
-    "static/js/2.502e7a34.chunk.js",
-    "static/js/main.f16ea292.chunk.js"
+    "static/js/runtime-main.d94e56ed.js",
+    "static/js/2.5d7e8eae.chunk.js",
+    "static/js/main.0daadf20.chunk.js"
   ]
 }
