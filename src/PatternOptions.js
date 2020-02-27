@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { FormGroup, HTMLSelect, Collapse, Divider } from '@blueprintjs/core';
 import PatternHeader from './PatternHeader';
-import { PATTERN_TYPES } from './scatterplot/patterns/PatternManager';
+import { PATTERN_TYPES, defaultOptions } from './scatterplot/patterns/PatternManager';
 import PulseOptions from './PulseOptions';
 import RadarOptions from './RadarOptions';
-
-//const updateX = _debounce((setPattern, newValue) => setPattern({ x: newValue }), debounceTime);
 
 export default function PatternOptions({ patternKey, pattern, setPattern }) {
   const [type, setType] = useState(pattern.type);
@@ -13,8 +11,8 @@ export default function PatternOptions({ patternKey, pattern, setPattern }) {
 
   const typeChange = (event) => {
     const newValue = parseInt(event.target.value, 10);
+    setPattern({ type: newValue, ...defaultOptions[newValue] });
     setType(newValue);
-    setPattern({ type: newValue });
   };
 
   let typeOptions;

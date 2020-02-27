@@ -1,12 +1,25 @@
 import vert from '../pattern.vert';
 import frag from './pulse.frag';
 
+export const defaultOptions = {
+  hsvColor: [0.5, 1, 1],
+  a: 1,
+  c1: 0.1,
+  c2: 0.1,
+  minValue: 0.2,
+  cyclesPerSecond: 1,
+  wavesPerCycle: 1,
+  direction: 1,
+  hueVariation: 0.1,
+  hueVariationPeriod: 2,
+};
+
 export default function createPulseDraw(regl, fbo) { 
   const drawFn = regl({
     frag: frag,
     vert: vert,
     attributes: {
-      a_position: regl.buffer([
+      position: regl.buffer([
         [-1, -1],
         [1, -1],
         [-1, 1],
@@ -16,46 +29,47 @@ export default function createPulseDraw(regl, fbo) {
       ]),
     },
     uniforms: {
-      u_resolution: regl.prop('u_resolution'),
-      u_texAtlasIndex: regl.prop('u_texAtlasIndex'),
-      u_texAtlasSize: regl.prop('u_texAtlasSize'),
-      u_time: regl.prop('u_time'),
-      u_hsvColor: regl.prop('u_hsvColor'),
-      u_a: regl.prop('u_a'),
-      u_c1: regl.prop('u_c1'),
-      u_c2: regl.prop('u_c2'),
-      u_minValue: regl.prop('u_minValue'),
-      u_cyclesPerSecond: regl.prop('u_cyclesPerSecond'),
-      u_wavesPerCycle: regl.prop('u_wavesPerCycle'),
-      u_direction: regl.prop('u_direction'),
+      resolution: regl.prop('resolution'),
+      texAtlasIndex: regl.prop('texAtlasIndex'),
+      texAtlasSize: regl.prop('texAtlasSize'),
+      time: regl.prop('time'),
+
+      hsvColor: regl.prop('hsvColor'),
+      a: regl.prop('a'),
+      c1: regl.prop('c1'),
+      c2: regl.prop('c2'),
+      minValue: regl.prop('minValue'),
+      cyclesPerSecond: regl.prop('cyclesPerSecond'),
+      wavesPerCycle: regl.prop('wavesPerCycle'),
+      direction: regl.prop('direction'),
+      hueVariation: regl.prop('hueVariation'),
+      hueVariationPeriod: regl.prop('hueVariationPeriod'),
     },
     count: 6,
     framebuffer: fbo,
   });
 
-  return (fbo, atlasSize, atlasIndex, time, {
-    hsvColor = [0.5, 1, 1],
-    a = 1,
-    c1 = 0.1,
-    c2 = 0.1,
-    minValue = 0.2,
-    cyclesPerSecond = 1,
-    wavesPerCycle = 1,
-    direction = 1,
-  }) => {
+  return (fbo, texAtlasSize, texAtlasIndex, time, options) => {
+    const {
+      hsvColor, a, c1, c2, minValue, cyclesPerSecond, wavesPerCycle,
+      direction, hueVariation, hueVariationPeriod
+    } = { ...defaultOptions, ...options};
+
     drawFn({
-      u_resolution: [fbo.width, fbo.height],
-      u_texAtlasSize: atlasSize,
-      u_texAtlasIndex: atlasIndex,
-      u_time: time,
-      u_hsvColor: hsvColor,
-      u_a: a,
-      u_c1: c1,
-      u_c2: c2,
-      u_minValue: minValue,
-      u_cyclesPerSecond: cyclesPerSecond,
-      u_wavesPerCycle: wavesPerCycle,
-      u_direction: direction,
+      resolution: [fbo.width, fbo.height],
+      texAtlasSize,
+      texAtlasIndex,
+      time,
+      hsvColor,
+      a,
+      c1,
+      c2,
+      minValue,
+      cyclesPerSecond,
+      wavesPerCycle,
+      direction,
+      hueVariation,
+      hueVariationPeriod,
     });
   };
 }

@@ -1,13 +1,13 @@
 precision mediump float;
 
-uniform vec2 u_resolution;
-uniform vec4 u_color;
+uniform vec2 resolution;
+uniform vec4 color;
 
-varying vec2 v_min;
-varying vec2 v_max;
+varying vec2 posMin;
+varying vec2 posMax;
 
 vec2 normalizeFragCoords() {
-  return (gl_FragCoord.xy / (u_resolution) - v_min) / (v_max - v_min); 
+  return (gl_FragCoord.xy / (resolution) - posMin) / (posMax - posMin); 
 }
 
 void main () {
@@ -18,5 +18,5 @@ void main () {
   float dist = distance(normalizedFragCoord, center) * 2.0;
   dist = pow(dist, 0.5);
 
-  gl_FragColor = vec4((1.0 - dist) * u_color.rgb, 1);
+  gl_FragColor = vec4((1.0 - dist) * color.rgb, 1);
 }

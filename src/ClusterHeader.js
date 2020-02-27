@@ -1,8 +1,9 @@
 import React from 'react';
+import { useSelector, shallowEqual } from 'react-redux';
 import { Button } from '@blueprintjs/core';
-import { colorsCool } from './constants';
 
 export default function ClusterHeader({ clusterKey, category, setIsOpen, isOpen }) {
+  const categoryColors = useSelector((state) => state.categoryColors, shallowEqual);
   const clickHandler = () => setIsOpen(!isOpen);
 
   return (
@@ -12,7 +13,7 @@ export default function ClusterHeader({ clusterKey, category, setIsOpen, isOpen 
           <b>Cluster: </b> #{clusterKey}
         </div>
         <div className="cluster-category">
-          <div style={{ backgroundColor: colorsCool[category] }} className="cluster-category__color-box" />
+          <div style={{ backgroundColor: categoryColors[category] }} className="cluster-category__color-box" />
         </div>
 
         <style jsx global>{`

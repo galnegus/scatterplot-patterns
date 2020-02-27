@@ -6,7 +6,7 @@ export default function createPlainDraw(regl, fbo) {
     frag: frag,
     vert: vert,
     attributes: {
-      a_position: regl.buffer([
+      position: regl.buffer([
         [-1, -1],
         [1, -1],
         [-1, 1],
@@ -16,11 +16,11 @@ export default function createPlainDraw(regl, fbo) {
       ]),
     },
     uniforms: {
-      u_resolution: regl.prop('u_resolution'),
-      u_texAtlasIndex: regl.prop('u_texAtlasIndex'),
-      u_texAtlasSize: regl.prop('u_texAtlasSize'),
-      u_time: regl.prop('u_time'),
-      u_color: regl.prop('u_color'),
+      resolution: regl.prop('resolution'),
+      texAtlasIndex: regl.prop('texAtlasIndex'),
+      texAtlasSize: regl.prop('texAtlasSize'),
+      time: regl.prop('time'),
+      color: regl.prop('color'),
     },
     count: 6,
     framebuffer: fbo,
@@ -28,11 +28,11 @@ export default function createPlainDraw(regl, fbo) {
 
   return (fbo, atlasSize, atlasIndex, time, { color }) => {
     drawFn({
-      u_resolution: [fbo.width, fbo.height],
-      u_texAtlasSize: atlasSize,
-      u_texAtlasIndex: atlasIndex,
-      u_time: (time * 0.5) % 1,
-      u_color: color,
+      resolution: [fbo.width, fbo.height],
+      texAtlasSize: atlasSize,
+      texAtlasIndex: atlasIndex,
+      time: (time * 0.5) % 1,
+      color: color,
     });
   };
 }

@@ -1,14 +1,14 @@
 precision mediump float;
 
-attribute vec2 a_position;
+attribute vec2 position;
 
-uniform vec2 u_resolution;
-uniform float u_texAtlasIndex;
-uniform vec2 u_texAtlasSize;
-uniform float u_time;
+uniform vec2 resolution;
+uniform float texAtlasIndex;
+uniform vec2 texAtlasSize;
+uniform float time;
 
-varying vec2 v_min;
-varying vec2 v_max;
+varying vec2 posMin;
+varying vec2 posMax;
 
 float modI(float a, float b) {
   float m = a - floor((a + 0.5) / b) * b;
@@ -16,20 +16,20 @@ float modI(float a, float b) {
 }
 
 void main () {
-  float maxLength = u_texAtlasSize.x * u_texAtlasSize.y;
-  float modIndex = modI(u_texAtlasIndex, maxLength);
+  float maxLength = texAtlasSize.x * texAtlasSize.y;
+  float modIndex = modI(texAtlasIndex, maxLength);
 
-  float yIndex = floor((modIndex + 0.5) / u_texAtlasSize.x);
-  float xIndex = modI(modIndex, u_texAtlasSize.x);
+  float yIndex = floor((modIndex + 0.5) / texAtlasSize.x);
+  float xIndex = modI(modIndex, texAtlasSize.x);
 
-  float yStep = 1.0 / float(u_texAtlasSize.y);
-  float xStep = 1.0 / float(u_texAtlasSize.x);
+  float yStep = 1.0 / float(texAtlasSize.y);
+  float xStep = 1.0 / float(texAtlasSize.x);
 
-  v_min = vec2(xIndex * xStep, yIndex * yStep);
-  v_max = vec2((xIndex + 1.0) * xStep, (yIndex + 1.0) * yStep);
+  posMin = vec2(xIndex * xStep, yIndex * yStep);
+  posMax = vec2((xIndex + 1.0) * xStep, (yIndex + 1.0) * yStep);
 
-  vec2 texPos = (a_position + 1.0) * 0.5;
-  texPos = texPos * (v_max - v_min) + v_min;
+  vec2 texPos = (position + 1.0) * 0.5;
+  texPos = texPos * (posMax - posMin) + posMin;
   texPos = texPos * 2.0 - 1.0; 
 
   gl_Position = vec4(texPos, 0, 1);

@@ -1,12 +1,12 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { Card, Tabs, Tab } from '@blueprintjs/core';
 import ScatterplotOptions from './ScatterplotOptions';
 import DataOptions from './DataOptions';
 import PatternsOptions from './PatternsOptions';
-import { ThemeContext } from './contexts';
 
 export default function Sidebar({ scatterplot }) {
-  const { isDarkTheme } = useContext(ThemeContext);
+  const isDarkTheme = useSelector((state) => state.isDarkTheme);
 
   return (
     <Card className={`card-sidebar ${isDarkTheme ? 'bp3-dark' : ''}`} elevation={2}>

@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector, shallowEqual } from 'react-redux'
+import tinycolor from 'tinycolor2';
 import { Divider } from '@blueprintjs/core';
 import PatternOptions from './PatternOptions';
-import { PATTERN_TYPES } from './scatterplot/patterns/PatternManager';
-import { DataContext } from './contexts';
+import { PATTERN_TYPES, defaultOptions } from './scatterplot/patterns/PatternManager';
 
 // gives you a new key when you call it.
 const keyGen = (() => {
@@ -10,39 +11,34 @@ const keyGen = (() => {
   return () => i++;
 })();
 
-const defaultPulse = (category) => ({
+const defaultPulse = (category, hsvColor) => ({
   type: PATTERN_TYPES.PULSE,
   category,
-  hsvColor: [Math.random(), 1, 1],
-  a: 1,
-  c1: 0.1,
-  c2: 0.1,
-  minValue: 0.2,
-  cyclesPerSecond: 1,
-  wavesPerCycle: 1,
-  direction: 1,
+  ...defaultOptions[PATTERN_TYPES.PULSE],
+  hsvColor
 });
 
-const defaultRadar = (category) => ({
+const defaultRadar = (category, hsvColor) => ({
   type: PATTERN_TYPES.RADAR,
   category,
-  hsvColor: [Math.random(), 1, 1],
-  gamma1: 5,
-  gamma2: 5,
-  maxValue: 1,
-  minValue: 0.2,
-  cyclesPerSecond: 1,
-  nSpokes: 2,
-  direction: 1,
+  ...defaultOptions[PATTERN_TYPES.RADAR],
+  hsvColor
 });
 
+function toHsvColor(hex) {
+  const hsvObj = tinycolor(hex).toHsv();
+  return [hsvObj.h / 360, hsvObj.s, hsvObj.v];
+}
+
 export default function DataOptions({ scatterplot }) {
+  const categoryColors = useSelector((state) => state.categoryColors, shallowEqual);
+
   const [patterns, setPatterns] = useState({
-    1: defaultRadar(0),
-    2: defaultPulse(1)
+    1: defaultRadar(0, toHsvColor(categoryColors[0])),
+    2: defaultPulse(1, toHsvColor(categoryColors[1]))
   });
 
-  const { maxCategories } = useContext(DataContext);
+  const maxCategories = useSelector((state) => state.maxCategories);
 
   // TODO: effect when maxCategories change, add/remove patterns
 

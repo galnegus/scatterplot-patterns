@@ -2,11 +2,18 @@ import _has from 'lodash-es/has';
 import createPlainDraw from './plain';
 import createPulseDraw from './pulse';
 import createRadarDraw from './radar';
+import { defaultOptions as defaultPulseOptions } from './pulse';
+import { defaultOptions as defaultRadarOptions } from './radar';
 
 export const PATTERN_TYPES = {
   PLAIN: 0,
   PULSE: 1,
   RADAR: 2,
+};
+
+export const defaultOptions = {
+  [PATTERN_TYPES.PULSE]: defaultPulseOptions,
+  [PATTERN_TYPES.RADAR]: defaultRadarOptions,
 };
 
 export default class PatternManager {

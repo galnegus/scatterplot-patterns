@@ -23,6 +23,10 @@ export default function Meta() {
           margin-right: 20px;
           min-width: 70px;
         }
+
+        .circle-picker {
+          margin-top: 5px;
+        }
       `}</style>
     </>
   );

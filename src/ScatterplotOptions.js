@@ -1,39 +1,25 @@
-import React, { useState, useContext } from 'react';
-import _debounce from 'lodash-es/debounce';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux'
 import { FormGroup, Slider, Switch, Alignment, Divider } from '@blueprintjs/core';
-import { defaultValues, colorsCool, colorsLame } from './constants';
-import { ThemeContext } from './contexts';
-
-const debounceTime = 100;
-
-const updatePointSize = _debounce((scatterplot, newValue) => scatterplot.set({ pointSize: newValue }), debounceTime);
+import { defaultValues } from './constants';
+import { toggleTheme } from './actions';
+import useSlider from './useSlider';
 
 export default function ScatterplotOptions({ scatterplot }) {
-  const [pointSize, setPointSize] = useState(defaultValues.pointSize);
-  const { isDarkTheme, toggleTheme } = useContext(ThemeContext);
+  const [pointSize, pointSizeChange] = useSlider('pointSize', defaultValues.pointSize, scatterplot && scatterplot.set);
+  const isDarkTheme = useSelector((state) => state.isDarkTheme);
+  const dispatch = useDispatch();
 
-  const useColorsChange = (event) => scatterplot.set({ colors: event.target.checked ? colorsCool : colorsLame });
-  const pointSizeChange = (newValue) => {
-    setPointSize(newValue);
-    updatePointSize(scatterplot, newValue);
-  };
+  //const useColorsChange = (event) => scatterplot.set({ colors: event.target.checked ? colorsCool : colorsLame });
 
   return (
     <div>
       <Divider />
       <FormGroup>
         <Switch
-          defaultChecked={defaultValues.useColors}
-          label="Use colors"
-          onChange={useColorsChange}
-          innerLabel="no"
-          innerLabelChecked="yes"
-          alignIndicator={Alignment.RIGHT}
-        />
-        <Switch
           defaultChecked={isDarkTheme}
           label="Dark theme"
-          onChange={toggleTheme}
+          onChange={() => dispatch(toggleTheme())}
           innerLabel="no"
           innerLabelChecked="yes"
           alignIndicator={Alignment.RIGHT}

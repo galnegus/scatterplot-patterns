@@ -1,0 +1,19 @@
+- Introduction
+  - TODO
+- Background
+  - TODO
+- Method
+  - Scatterplot technical
+  - Pattern technical implementation
+  - Patterns
+    - Pulse
+      - All parameters
+    - Radar
+      - All parameters
+    - Vortex?
+    - Random Noise?
+    - Common pattern parameters
+- Results
+  - TODO
+- Discussion
+  - TODO

@@ -1,8 +1,9 @@
 import React from 'react';
+import { useSelector, shallowEqual } from 'react-redux';
 import { Button } from '@blueprintjs/core';
-import { colorsCool } from './constants';
 
 export default function PatternHeader({ patternKey, category, setIsOpen, isOpen }) {
+  const categoryColors = useSelector((state) => state.categoryColors, shallowEqual);
   const clickHandler = () => setIsOpen(!isOpen);
 
   return (
@@ -12,7 +13,7 @@ export default function PatternHeader({ patternKey, category, setIsOpen, isOpen 
           <b>Pattern: </b> #{patternKey}
         </div>
         <div className="pattern-category">
-          <div style={{ backgroundColor: colorsCool[category] }} className="pattern-category__color-box" />
+          <div style={{ backgroundColor: categoryColors[category] }} className="pattern-category__color-box" />
         </div>
 
         <style jsx global>{`

@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Divider, Button, Intent } from '@blueprintjs/core';
 import dataGen from './dataGen';
 import ClusterOptions from './ClusterOptions';
-import { DataContext } from './contexts';
+import { setMaxCategories } from './actions';
 
 // sigma ~ x radius
 // amplitude ~ y radius
@@ -34,15 +35,15 @@ export default function DataOptions({ scatterplot }) {
     1: defaultCluster(0),
     2: defaultCluster(1)
   });
+  const dispatch = useDispatch();
 
-  const { setMaxCategories } = useContext(DataContext)
   useEffect(() => {
     if (scatterplot !== null) {
       scatterplot.draw(Object.keys(clusters).map((clusterKey) => dataGen(clusters[clusterKey]))
         .reduce((acc, curr) => acc.concat(curr), []));
-      setMaxCategories(Math.max(...Object.keys(clusters).map((clusterKey) => clusters[clusterKey].category)) + 1);
+      dispatch(setMaxCategories(Math.max(...Object.keys(clusters).map((clusterKey) => clusters[clusterKey].category)) + 1));
     }
-  }, [scatterplot, clusters, setMaxCategories])
+  }, [scatterplot, clusters])
 
   const createSetCluster = (clusterKey) => {
     return (newCluster) => {
