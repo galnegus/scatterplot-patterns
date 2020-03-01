@@ -1,22 +1,17 @@
 precision mediump float;
 
+#pragma glslify: normalizeFragCoords = require(../../glsl/normalizeFragCoords)
+#pragma glslify: hsv2rgb_smooth = require(../../glsl/hsv2rgb_smooth)
+
 uniform vec2 resolution;
-uniform vec4 color;
+uniform vec3 hsvColor;
+uniform bool useColors;
 
 varying vec2 posMin;
 varying vec2 posMax;
 
-vec2 normalizeFragCoords() {
-  return (gl_FragCoord.xy / (resolution) - posMin) / (posMax - posMin); 
-}
-
 void main () {
-  vec2 normalizedFragCoord = normalizeFragCoords();
+  vec2 normalizedFragCoord = normalizeFragCoords(resolution, posMin, posMax);
 
-  vec2 center = vec2(0.5, 0.5);
-
-  float dist = distance(normalizedFragCoord, center) * 2.0;
-  dist = pow(dist, 0.5);
-
-  gl_FragColor = vec4((1.0 - dist) * color.rgb, 1);
+  gl_FragColor = vec4(hsv2rgb_smooth(vec3(hsvColor.x, hsvColor.y * float(useColors), hsvColor.z)), 1);
 }

@@ -2,17 +2,23 @@ precision mediump float;
 
 #pragma glslify: when_gt = require(glsl-conditionals/when_gt)
 #pragma glslify: when_le = require(glsl-conditionals/when_le) 
+#pragma glslify: when_eq = require(glsl-conditionals/when_eq) 
 #pragma glslify: hsv2rgb_smooth = require(../../glsl/hsv2rgb_smooth)
+#pragma glslify: normalizeFragCoords = require(../../glsl/normalizeFragCoords)
+#pragma glslify: hueWave = require(../../glsl/hueWave)
 
 uniform vec3 hsvColor;
 uniform float hueVariation;
 uniform float hueVariationPeriod;
 uniform vec2 resolution;
 uniform float time;
+uniform bool useColors;
+
 uniform float cyclesPerSecond;
 uniform float wavesPerCycle;
 uniform float direction;
-uniform vec3 animateBy;
+uniform float invert;
+uniform vec3 animationMix;
 
 uniform float a;
 uniform float c1;
@@ -22,14 +28,6 @@ uniform float minValue;
 varying vec2 posMin;
 varying vec2 posMax;
 
-
-// https://stackoverflow.com/a/22400799
-float triangleWave(in float x, in float period) {
-  float amplitude = 1.0;
-  float halfPeriod = period / 2.0;
-  return (amplitude / halfPeriod) * (halfPeriod - abs(mod(x, period) - halfPeriod));
-}
-
 float gauss(in float diff) {
   float coolDiff = diff / wavesPerCycle;
   float c = c1 * when_gt(coolDiff, 0.0) + c2 * when_le(coolDiff, 0.0);
@@ -37,7 +35,7 @@ float gauss(in float diff) {
 }
 
 void main() {
-  vec2 normalizedFragCoord = (gl_FragCoord.xy / resolution - posMin) / (posMax - posMin); 
+  vec2 normalizedFragCoord = normalizeFragCoords(resolution, posMin, posMax);
 
   float dist = distance(normalizedFragCoord, vec2(0.5, 0.5)) * 2.0;
 
@@ -55,12 +53,13 @@ void main() {
 
   float value = max(leftDiff, rightDiff);
 
+  value = when_eq(invert, 1.0) * (value * -1.0 + 1.0) + when_eq(invert, 0.0) * value; 
   value = value * (1.0 - minValue) + minValue;
-  float hue = abs(hsvColor.x + (triangleWave(time, hueVariationPeriod) * 2.0 - 1.0) * hueVariation);
-
-  float animateSaturation = animateBy[0] * value - animateBy[0] + 1.0; // linear interpolation
-  float animateValue = animateBy[1] * value - animateBy[1] + 1.0; // linear interpolation
-  float animateAlpha = animateBy[2] * value - animateBy[2] + 1.0; // linear interpolation
+  
+  float hue = hueWave(hsvColor.x, time, hueVariationPeriod, hueVariation);
+  float animateSaturation = mix(1.0, value, animationMix[0]) * float(useColors);
+  float animateValue = mix(1.0, value, animationMix[1]);
+  float animateAlpha = mix(1.0, value, animationMix[2]);
 
   gl_FragColor = vec4(hsv2rgb_smooth(vec3(hue, animateSaturation * hsvColor.y, animateValue * hsvColor.z)), animateAlpha);
 }

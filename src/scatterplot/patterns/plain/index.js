@@ -20,20 +20,21 @@ export default function createPlainDraw(regl, fbo) {
       texAtlasIndex: regl.prop('texAtlasIndex'),
       texAtlasSize: regl.prop('texAtlasSize'),
       time: regl.prop('time'),
-      color: regl.prop('color'),
+      hsvColor: regl.prop('hsvColor'),
+      useColors: regl.prop('useColors'),
     },
     count: 6,
     framebuffer: fbo,
   });
 
-  return (fbo, atlasSize, atlasIndex, time, animateBy, { color }) => {
+  return (fbo, atlasSize, atlasIndex, time, useColors, { hsvColor }) => {
     drawFn({
       resolution: [fbo.width, fbo.height],
       texAtlasSize: atlasSize,
       texAtlasIndex: atlasIndex,
       time: (time * 0.5) % 1,
-      animateBy,
-      color: color,
+      useColors,
+      hsvColor: hsvColor,
     });
   };
 }

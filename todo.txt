@@ -7,14 +7,14 @@ Technical fixes
   - Fix pattern option so that it doesn't show inactive class patterns
   - Put scatterplot default options in the scatterplot/constants.js file (e.g. animationEffectSVA)
   - Do more refactoring on pattern fragment shaders, move stuff into separate glslify functions so there's less code repetition
+  - Radar pattern options: max value > min value constraint
 
 Method improvements
   - Add third pattern (???)
     - Idea: A vortex, very similar to radar but doesn't move according to radius, instead moves both radius and angle over time, also has a bandwidth.
     - Idea: Random noise, ideally it smoothly transition between different noisy patterns, so it doesn't just jump between frames
   - Inverting the pattern effect
-  - On/off switch for pattern vs color
-  - On/off switch for color vs greyscale
+  - On/off switch for color vs greyscale (for light theme)
   - Modulate unused parameter of radar/pulse
     - Radar position by radius (angle is a function of radius)
     - Radar speed by radius (angle is a function of radius [and time?])
@@ -52,6 +52,8 @@ Method improvements
       - Value
       - Alpha/Depth
   - Add/test abs() on the hue thingy (it's not there, but it prolly should be so you don't get negative/>1 hue)
+  - On/off switch for pattern vs color
+  - On/off switch for color vs greyscale
 
 
 Other shit

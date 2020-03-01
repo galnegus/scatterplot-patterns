@@ -143,11 +143,11 @@ const createScatterplot = ({
 
   let bboxTex;
   let bboxTexRes = 0;
-
   let glBench;
-
-  let animateBy = [0, 1, 0]; // s = saturation, v = value, a = alpha
+  let animationMix = [0, 1, 0]; // s = saturation, v = value, a = alpha
   let animateDepth = false;
+  let showPatterns = true;
+  let useColors = true;
 
   let patternManager = new PatternManager(regl);
   patternManager.set(0, {
@@ -811,7 +811,7 @@ const createScatterplot = ({
       drawBackgroundImage();
     }
 
-    patternManager.draw(time, animateBy);
+    patternManager.draw(time, animationMix, useColors, showPatterns);
 
     // The draw order of the following calls is important!
     drawPointBodies();
@@ -888,16 +888,28 @@ const createScatterplot = ({
     recticleVLine.setStyle({ color: recticleColor });
   };
 
-  const setAnimateBy = (newAnimateBy) => {
-    if (newAnimateBy === null) return;
+  const setAnimationMix = (newAnimationMix) => {
+    if (newAnimationMix === null) return;
 
-    animateBy = newAnimateBy;
+    animationMix = newAnimationMix;
   }
 
   const setAnimateDepth = (newAnimateDepth) => {
     if (newAnimateDepth === null) return;
 
     animateDepth = newAnimateDepth;
+  }
+
+  const setShowPatterns = (newShowPatterns) => {
+    if (newShowPatterns === null) return;
+
+    showPatterns = newShowPatterns;
+  }
+
+  const setUseColors = (newUseColors) => {
+    if (newUseColors === null) return;
+
+    useColors = newUseColors;
   }
 
   /**
@@ -950,8 +962,10 @@ const createScatterplot = ({
     height: newHeight = null,
     width: newWidth = null,
     aspectRatio: newDataAspectRatio = null,
-    animateBy: newAnimateBy = null,
+    animationMix: newAnimationMix = null,
     animateDepth: newAnimateDepth = null,
+    showPatterns: newShowPatterns = null,
+    useColors: newUseColors = null,
   } = {}) => {
     setBackground(newBackground);
     setBackgroundImage(newBackgroundImage);
@@ -969,8 +983,10 @@ const createScatterplot = ({
     setHeight(newHeight);
     setWidth(newWidth);
     setDataAspectRatio(newDataAspectRatio);
-    setAnimateBy(newAnimateBy);
+    setAnimationMix(newAnimationMix);
     setAnimateDepth(newAnimateDepth);
+    setShowPatterns(newShowPatterns);
+    setUseColors(newUseColors);
 
     updateViewAspectRatio();
     camera.refresh();

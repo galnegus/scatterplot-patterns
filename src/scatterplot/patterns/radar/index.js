@@ -6,11 +6,12 @@ export const defaultOptions = {
   gamma1: 2.0,
   gamma2: 2.0,
   maxValue: 1,
-  minValue: 0.2,
+  minValue: 0.5,
   cyclesPerSecond: 1,
   nSpokes: 2,
   direction: 1,
-  hueVariation: 0.1,
+  invert: 0,
+  hueVariation: 0.05,
   hueVariationPeriod: 2,
 }
 
@@ -33,7 +34,8 @@ export default function createRadarDraw(regl, fbo) {
       texAtlasIndex: regl.prop('texAtlasIndex'),
       texAtlasSize: regl.prop('texAtlasSize'),
       time: regl.prop('time'),
-      animateBy: regl.prop('animateBy'),
+      animationMix: regl.prop('animationMix'),
+      useColors: regl.prop('useColors'),
       
       hsvColor: regl.prop('hsvColor'),
       gamma1: regl.prop('gamma1'),
@@ -43,6 +45,7 @@ export default function createRadarDraw(regl, fbo) {
       cyclesPerSecond: regl.prop('cyclesPerSecond'),
       nSpokes: regl.prop('nSpokes'),
       direction: regl.prop('direction'),
+      invert: regl.prop('invert'),
       hueVariation: regl.prop('hueVariation'),
       hueVariationPeriod: regl.prop('hueVariationPeriod'),
     },
@@ -50,10 +53,10 @@ export default function createRadarDraw(regl, fbo) {
     framebuffer: fbo,
   });
 
-  return (fbo, texAtlasSize, texAtlasIndex, time, animateBy, options) => {
+  return (fbo, texAtlasSize, texAtlasIndex, time, animationMix, useColors, options) => {
     const { 
       hsvColor, gamma1, gamma2, maxValue, minValue, cyclesPerSecond,
-      nSpokes, direction, hueVariation, hueVariationPeriod,
+      nSpokes, direction, invert, hueVariation, hueVariationPeriod,
     } = { ...defaultOptions, ...options };
 
     drawFn({
@@ -61,7 +64,8 @@ export default function createRadarDraw(regl, fbo) {
       texAtlasSize,
       texAtlasIndex,
       time,
-      animateBy,
+      animationMix,
+      useColors,
       hsvColor,
       gamma1,
       gamma2,
@@ -70,6 +74,7 @@ export default function createRadarDraw(regl, fbo) {
       cyclesPerSecond,
       nSpokes,
       direction,
+      invert,
       hueVariation,
       hueVariationPeriod,
     });

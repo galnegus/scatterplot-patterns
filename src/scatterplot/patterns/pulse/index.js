@@ -6,11 +6,12 @@ export const defaultOptions = {
   a: 1,
   c1: 0.1,
   c2: 0.1,
-  minValue: 0.2,
+  minValue: 0.5,
   cyclesPerSecond: 1,
   wavesPerCycle: 1,
   direction: 1,
-  hueVariation: 0.1,
+  invert: 0,
+  hueVariation: 0.05,
   hueVariationPeriod: 2,
 };
 
@@ -33,7 +34,8 @@ export default function createPulseDraw(regl, fbo) {
       texAtlasIndex: regl.prop('texAtlasIndex'),
       texAtlasSize: regl.prop('texAtlasSize'),
       time: regl.prop('time'),
-      animateBy: regl.prop('animateBy'),
+      animationMix: regl.prop('animationMix'),
+      useColors: regl.prop('useColors'),
 
       hsvColor: regl.prop('hsvColor'),
       a: regl.prop('a'),
@@ -43,6 +45,7 @@ export default function createPulseDraw(regl, fbo) {
       cyclesPerSecond: regl.prop('cyclesPerSecond'),
       wavesPerCycle: regl.prop('wavesPerCycle'),
       direction: regl.prop('direction'),
+      invert: regl.prop('invert'),
       hueVariation: regl.prop('hueVariation'),
       hueVariationPeriod: regl.prop('hueVariationPeriod'),
     },
@@ -50,10 +53,10 @@ export default function createPulseDraw(regl, fbo) {
     framebuffer: fbo,
   });
 
-  return (fbo, texAtlasSize, texAtlasIndex, time, animateBy, options) => {
+  return (fbo, texAtlasSize, texAtlasIndex, time, animationMix, useColors, options) => {
     const {
       hsvColor, a, c1, c2, minValue, cyclesPerSecond, wavesPerCycle,
-      direction, hueVariation, hueVariationPeriod
+      direction, invert, hueVariation, hueVariationPeriod
     } = { ...defaultOptions, ...options};
     
     drawFn({
@@ -61,7 +64,8 @@ export default function createPulseDraw(regl, fbo) {
       texAtlasSize,
       texAtlasIndex,
       time,
-      animateBy,
+      animationMix,
+      useColors,
       hsvColor,
       a,
       c1,
@@ -70,6 +74,7 @@ export default function createPulseDraw(regl, fbo) {
       cyclesPerSecond,
       wavesPerCycle,
       direction,
+      invert,
       hueVariation,
       hueVariationPeriod,
     });

@@ -25,6 +25,7 @@ export default function RadarOptions({ pattern, setPattern }) {
   const [hueVariationPeriod, hueVariationPeriodChange] = useSlider('hueVariationPeriod', pattern.hueVariationPeriod, setPattern);
 
   const directionChange = (event) => setPattern({ direction: event.target.checked ? 1 : -1 });
+  const invertChange = (event) => setPattern({ invert: event.target.checked ? 1 : 0 });
 
   return (
     <>
@@ -36,6 +37,16 @@ export default function RadarOptions({ pattern, setPattern }) {
           onChange={directionChange}
           innerLabel="Counter-clockwise"
           innerLabelChecked="Clockwise"
+          alignIndicator={Alignment.RIGHT}
+        />
+      </FormGroup>
+      <FormGroup>
+        <Switch
+          defaultChecked={pattern.invert === 1}
+          label="Invert"
+          onChange={invertChange}
+          innerLabel="No"
+          innerLabelChecked="Yes"
           alignIndicator={Alignment.RIGHT}
         />
       </FormGroup>
