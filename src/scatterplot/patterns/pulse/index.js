@@ -33,6 +33,7 @@ export default function createPulseDraw(regl, fbo) {
       texAtlasIndex: regl.prop('texAtlasIndex'),
       texAtlasSize: regl.prop('texAtlasSize'),
       time: regl.prop('time'),
+      animateBy: regl.prop('animateBy'),
 
       hsvColor: regl.prop('hsvColor'),
       a: regl.prop('a'),
@@ -49,17 +50,18 @@ export default function createPulseDraw(regl, fbo) {
     framebuffer: fbo,
   });
 
-  return (fbo, texAtlasSize, texAtlasIndex, time, options) => {
+  return (fbo, texAtlasSize, texAtlasIndex, time, animateBy, options) => {
     const {
       hsvColor, a, c1, c2, minValue, cyclesPerSecond, wavesPerCycle,
       direction, hueVariation, hueVariationPeriod
     } = { ...defaultOptions, ...options};
-
+    
     drawFn({
       resolution: [fbo.width, fbo.height],
       texAtlasSize,
       texAtlasIndex,
       time,
+      animateBy,
       hsvColor,
       a,
       c1,

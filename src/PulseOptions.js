@@ -28,6 +28,7 @@ export default function PulseOptions({ pattern, setPattern }) {
 
   return (
     <>
+      <span className="option-title bp3-text-muted">Wave Parameters</span>
       <FormGroup>
         <Switch
           defaultChecked={pattern.direction === 1}
@@ -128,6 +129,7 @@ export default function PulseOptions({ pattern, setPattern }) {
           fill={true}
         />
       </FormGroup>
+      <span className="option-title bp3-text-muted">Color Parameters</span>
       <FormGroup
         label="Color"
         inline={true}

@@ -28,6 +28,7 @@ export default function RadarOptions({ pattern, setPattern }) {
 
   return (
     <>
+      <span className="option-title bp3-text-muted">Rotation Parameters</span>
       <FormGroup>
         <Switch
           defaultChecked={pattern.direction === 1}
@@ -127,6 +128,7 @@ export default function RadarOptions({ pattern, setPattern }) {
           fill={true}
         />
       </FormGroup>
+      <span className="option-title bp3-text-muted">Color Parameters</span>
       <FormGroup
         label="Color"
         inline={true}

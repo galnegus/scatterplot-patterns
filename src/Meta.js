@@ -27,6 +27,14 @@ export default function Meta() {
         .circle-picker {
           margin-top: 5px;
         }
+
+        .option-title {
+          font-weight: 600;
+          text-transform: uppercase;
+          text-align: center;
+          display: block;
+          margin: 10px 0 5px 0;
+        }
       `}</style>
     </>
   );

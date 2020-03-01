@@ -75,11 +75,11 @@ export default class PatternManager {
     this.updateSize();
   }
 
-  draw(time) {
+  draw(time, animateBy) {
     for (let i = 0; i < this.maxCategories; i += 1) {
       if (!_has(this.patterns, i)) continue;
 
-      this.patternDraws[this.patterns[i].type](this.fbo, this.atlasSize, i, time, this.patterns[i]);
+      this.patternDraws[this.patterns[i].type](this.fbo, this.atlasSize, i, time, animateBy, this.patterns[i]);
     }
   }
 

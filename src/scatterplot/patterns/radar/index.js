@@ -33,6 +33,8 @@ export default function createRadarDraw(regl, fbo) {
       texAtlasIndex: regl.prop('texAtlasIndex'),
       texAtlasSize: regl.prop('texAtlasSize'),
       time: regl.prop('time'),
+      animateBy: regl.prop('animateBy'),
+      
       hsvColor: regl.prop('hsvColor'),
       gamma1: regl.prop('gamma1'),
       gamma2: regl.prop('gamma2'),
@@ -48,7 +50,7 @@ export default function createRadarDraw(regl, fbo) {
     framebuffer: fbo,
   });
 
-  return (fbo, texAtlasSize, texAtlasIndex, time, options) => {
+  return (fbo, texAtlasSize, texAtlasIndex, time, animateBy, options) => {
     const { 
       hsvColor, gamma1, gamma2, maxValue, minValue, cyclesPerSecond,
       nSpokes, direction, hueVariation, hueVariationPeriod,
@@ -59,6 +61,7 @@ export default function createRadarDraw(regl, fbo) {
       texAtlasSize,
       texAtlasIndex,
       time,
+      animateBy,
       hsvColor,
       gamma1,
       gamma2,

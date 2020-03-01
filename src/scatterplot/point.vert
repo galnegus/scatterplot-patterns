@@ -76,7 +76,6 @@ void main() {
   vec4 state = getFromTexture(stateTex, stateTexRes, stateIndex);
 
   uv = state.xy;
-  gl_Position = projection * view * model * vec4(state.x, state.y, 0.0, 1.0);
 
   // Determine color index
   float colorIndexCat = state.z * isColoredByCategory;
@@ -100,6 +99,8 @@ void main() {
 
   //color = texture2D(colorTex, colorTexIndex);
   color = findColor(state.z);
+
+  gl_Position = projection * view * model * vec4(state.x, state.y, color.a * 0.99, 1.0); // depth gets clipped when z = 1.00, so * 0.99!
 
   // The final scaling consists of linear scaling in [0, 1] and log scaling
   // in [1, [

@@ -146,6 +146,9 @@ const createScatterplot = ({
 
   let glBench;
 
+  let animateBy = [0, 1, 0]; // s = saturation, v = value, a = alpha
+  let animateDepth = false;
+
   let patternManager = new PatternManager(regl);
   patternManager.set(0, {
     type: PATTERN_TYPES.PLAIN,
@@ -400,7 +403,7 @@ const createScatterplot = ({
   const updateViewAspectRatio = () => {
     viewAspectRatio = width / height;
     projection = mat4.fromScaling([], [1 / viewAspectRatio, 1, 1]);
-    model = mat4.fromScaling([], [dataAspectRatio, 1, 1]);
+    model = mat4.fromScaling([], [dataAspectRatio, 1, 1,]);
   };
 
   const setDataAspectRatio = newDataAspectRatio => {
@@ -513,6 +516,7 @@ const createScatterplot = ({
   const getAtlasSize = () => patternManager.getAtlasSize();
   const getBBoxTex = () => bboxTex;
   const getBBoxTexRes = () => bboxTexRes;
+  const getAnimateDepth = () => animateDepth;
 
   const drawPoints = (
     getPointSizeExtra,
@@ -534,7 +538,7 @@ const createScatterplot = ({
         }
       },
 
-      depth: { enable: false },
+      depth: { enable: getAnimateDepth },
 
       attributes: {
         stateIndex: {
@@ -563,6 +567,7 @@ const createScatterplot = ({
         atlasSize: getAtlasSize,
         bboxTex: getBBoxTex,
         bboxTexRes: getBBoxTexRes,
+        animateDepth: getAnimateDepth,
       },
 
       count: getNumPoints,
@@ -795,7 +800,8 @@ const createScatterplot = ({
     regl.clear({
       // background color (transparent)
       color: [0, 0, 0, 0],
-      depth: 1
+      depth: 1,
+      stencil: 0,
     });
     patternManager.clear();
 
@@ -805,7 +811,7 @@ const createScatterplot = ({
       drawBackgroundImage();
     }
 
-    patternManager.draw(time);
+    patternManager.draw(time, animateBy);
 
     // The draw order of the following calls is important!
     drawPointBodies();
@@ -882,6 +888,18 @@ const createScatterplot = ({
     recticleVLine.setStyle({ color: recticleColor });
   };
 
+  const setAnimateBy = (newAnimateBy) => {
+    if (newAnimateBy === null) return;
+
+    animateBy = newAnimateBy;
+  }
+
+  const setAnimateDepth = (newAnimateDepth) => {
+    if (newAnimateDepth === null) return;
+
+    animateDepth = newAnimateDepth;
+  }
+
   /**
    * Update Regl's viewport, drawingBufferWidth, and drawingBufferHeight
    *
@@ -931,7 +949,9 @@ const createScatterplot = ({
     pointSizeSelected: newPointSizeSelected = null,
     height: newHeight = null,
     width: newWidth = null,
-    aspectRatio: newDataAspectRatio = null
+    aspectRatio: newDataAspectRatio = null,
+    animateBy: newAnimateBy = null,
+    animateDepth: newAnimateDepth = null,
   } = {}) => {
     setBackground(newBackground);
     setBackgroundImage(newBackgroundImage);
@@ -949,6 +969,8 @@ const createScatterplot = ({
     setHeight(newHeight);
     setWidth(newWidth);
     setDataAspectRatio(newDataAspectRatio);
+    setAnimateBy(newAnimateBy);
+    setAnimateDepth(newAnimateDepth);
 
     updateViewAspectRatio();
     camera.refresh();

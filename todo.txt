@@ -5,27 +5,25 @@ Technical fixes
   - Fix texture atlas resolution sizes
   - Fix option data model so that it syncs up (sort of done?)
   - Fix pattern option so that it doesn't show inactive class patterns
+  - Put scatterplot default options in the scatterplot/constants.js file (e.g. animationEffectSVA)
+  - Do more refactoring on pattern fragment shaders, move stuff into separate glslify functions so there's less code repetition
 
 Method improvements
   - Add third pattern (???)
     - Idea: A vortex, very similar to radar but doesn't move according to radius, instead moves both radius and angle over time, also has a bandwidth.
     - Idea: Random noise, ideally it smoothly transition between different noisy patterns, so it doesn't just jump between frames
-  - Encode some information in the alpha channel of the pattern?
-  - Consider using saturation instead of value?
-    - Add check boxes to filters to select whether to modulate:
-      - Saturation
-      - Value
-      - Alpha/Depth
   - Inverting the pattern effect
   - On/off switch for pattern vs color
   - On/off switch for color vs greyscale
   - Modulate unused parameter of radar/pulse
-    - Radar position by radius (value = time + radius * c)
-    - Radar speed by radius (value = time * radius * c)
-    - Pulse position by angle (value = time + angle * c)
+    - Radar position by radius (angle is a function of radius)
+    - Radar speed by radius (angle is a function of radius [and time?])
+    - Pulse position by angle (radius is a function of angle)
+
 Other shit
   - Data import 
   - Visualize gauss function in pattern options
+  - Dropdowns in specific pattern options (i.e. color options, wave options, speed options) for less clutter
 
 
 
@@ -47,6 +45,13 @@ Method improvements
       - Have an "emission rate", e_r, set up emission points with the interval e_r covering the range [-1, 2]. To find neighbours for a point x, first subtract the current u_time from x (so equivalent to u_time = 0) and then multiply x with e_r, the neighbouring points are given by floor(x) and ceil(x) and then downscaling the results by dividing with e_r again.
   - Radar max value?
   - Implement hue range for color selection
+  - Encode some information in the alpha channel of the pattern?
+  - Consider using saturation instead of value?
+    - Add check boxes to filters to select whether to modulate:
+      - Saturation
+      - Value
+      - Alpha/Depth
+  - Add/test abs() on the hue thingy (it's not there, but it prolly should be so you don't get negative/>1 hue)
 
 
 Other shit

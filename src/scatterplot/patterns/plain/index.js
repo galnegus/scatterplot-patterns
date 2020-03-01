@@ -26,12 +26,13 @@ export default function createPlainDraw(regl, fbo) {
     framebuffer: fbo,
   });
 
-  return (fbo, atlasSize, atlasIndex, time, { color }) => {
+  return (fbo, atlasSize, atlasIndex, time, animateBy, { color }) => {
     drawFn({
       resolution: [fbo.width, fbo.height],
       texAtlasSize: atlasSize,
       texAtlasIndex: atlasIndex,
       time: (time * 0.5) % 1,
+      animateBy,
       color: color,
     });
   };
