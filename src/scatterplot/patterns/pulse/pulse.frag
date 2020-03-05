@@ -29,9 +29,8 @@ varying vec2 posMin;
 varying vec2 posMax;
 
 float gauss(in float diff) {
-  float coolDiff = diff / wavesPerCycle;
-  float c = c1 * when_gt(coolDiff, 0.0) + c2 * when_le(coolDiff, 0.0);
-  return a * exp(-pow(coolDiff, 2.0)/(2.0 * c * c));
+  float c = c1 * when_gt(diff, 0.0) + c2 * when_le(diff, 0.0);
+  return a * exp(-pow(diff, 2.0)/(2.0 * c * c));
 }
 
 void main() {
@@ -41,17 +40,12 @@ void main() {
 
   float scaledTime = direction * cyclesPerSecond * time;
 
-  float diff = dist - scaledTime;
-  diff = mod(diff, 1.0 / wavesPerCycle);
+  float diff = mod(dist - scaledTime, 1.0 / wavesPerCycle);
+  float leftDiff = gauss(diff - 1.0 / wavesPerCycle);
+  float middleDiff = gauss(diff);
+  float rightDiff = gauss(diff + 1.0 / wavesPerCycle);
 
-  float newD = diff * wavesPerCycle - 0.5;
-  float leftTerm = floor(newD) / wavesPerCycle;
-  float rightTerm = ceil(newD) / wavesPerCycle;
-
-  float leftDiff = gauss(newD);
-  float rightDiff = gauss(newD);
-
-  float value = max(leftDiff, rightDiff);
+  float value = max(leftDiff, max(middleDiff, rightDiff));
 
   value = when_eq(invert, 1.0) * (value * -1.0 + 1.0) + when_eq(invert, 0.0) * value; 
   value = value * (1.0 - minValue) + minValue;

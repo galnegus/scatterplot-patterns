@@ -1,4 +1,4 @@
-precision mediump float;
+precision highp float;
 
 uniform sampler2D colorTex;
 uniform float colorTexRes;
@@ -39,7 +39,7 @@ vec4 getFromTexture(in sampler2D texture, in float textureRes, in float index) {
   float rowIndex = floor((index + eps) / textureRes);
   vec2 texIndex = vec2(
     (index / textureRes) - rowIndex + eps,
-    rowIndex / textureRes
+    rowIndex / textureRes + eps
   );
   return texture2D(texture, texIndex);
 }
@@ -88,13 +88,13 @@ void main() {
   float eps = 0.5 / colorTexRes;
   float colorLinearIndex = colorIndex + globalState;
   // Need to add cEps here to avoid floating point issue that can lead to
-  // dramatic changes in which color is loaded as floor(3/2.9) = 1 but
+  // dramatic changes in which color is loaded as floor(3/2.9999) = 1 but
   // floor(3/3.0001) = 0!
   float colorRowIndex = floor((colorLinearIndex + eps) / colorTexRes);
 
   vec2 colorTexIndex = vec2(
     (colorLinearIndex / colorTexRes) - colorRowIndex + eps,
-    colorRowIndex / colorTexRes
+    colorRowIndex / colorTexRes + eps
   );
 
   //color = texture2D(colorTex, colorTexIndex);
