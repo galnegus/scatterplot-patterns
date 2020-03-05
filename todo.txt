@@ -8,6 +8,7 @@ Technical fixes
   - Put scatterplot default options in the scatterplot/constants.js file (e.g. animationEffectSVA)
   - Do more refactoring on pattern fragment shaders, move stuff into separate glslify functions so there's less code repetition
   - Radar pattern options: max value > min value constraint
+  - Pattern manager: batch rendering? I.e. one single draw call for all patterns
 
 Method improvements
   - Add third pattern (???)

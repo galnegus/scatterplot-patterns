@@ -4,6 +4,7 @@ import tinycolor from 'tinycolor2';
 import { Divider } from '@blueprintjs/core';
 import PatternOptions from './PatternOptions';
 import { PATTERN_TYPES, defaultOptions } from './scatterplot/patterns/PatternManager';
+import { defaultPatterns } from './constants';
 
 // gives you a new key when you call it.
 const keyGen = (() => {
@@ -34,8 +35,11 @@ export default function DataOptions({ scatterplot }) {
   const categoryColors = useSelector((state) => state.categoryColors, shallowEqual);
 
   const [patterns, setPatterns] = useState({
-    1: defaultRadar(0, toHsvColor(categoryColors[0])),
-    2: defaultPulse(1, toHsvColor(categoryColors[1]))
+    1: {...defaultPatterns[0], hsvColor: toHsvColor(categoryColors[0])},
+    2: {...defaultPatterns[1], hsvColor: toHsvColor(categoryColors[1])},
+
+    //1: defaultRadar(0, toHsvColor(categoryColors[0])),
+    //2: defaultPulse(1, toHsvColor(categoryColors[1]))
   });
 
   const maxCategories = useSelector((state) => state.maxCategories);
@@ -56,7 +60,8 @@ export default function DataOptions({ scatterplot }) {
 
   const addPattern = (category) => setPatterns((oldPatterns) => ({
     ...oldPatterns,
-    [keyGen()]: defaultPulse(category)
+    [keyGen()]: {...defaultPatterns[category], hsvColor: toHsvColor(categoryColors[category])}
+    //[keyGen()]: defaultPulse(category, toHsvColor(categoryColors[category]))
   }));
 
   const removePattern = (patternKey) => setPatterns((oldPatterns) => {

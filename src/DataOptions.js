@@ -4,6 +4,7 @@ import { Divider, Button, Intent } from '@blueprintjs/core';
 import dataGen from './dataGen';
 import ClusterOptions from './ClusterOptions';
 import { setMaxCategories } from './actions';
+import DataLoader from './DataLoader';
 
 // sigma ~ x radius
 // amplitude ~ y radius
@@ -95,6 +96,11 @@ export default function DataOptions({ scatterplot }) {
           Add cluster
         </Button>
       </div>
+
+      <Divider />
+
+      <span className="option-title bp3-text-muted">LOAD REAL DATA</span>
+      <DataLoader scatterplot={scatterplot} />
 
       <style jsx>{`
         .data-add-new {
