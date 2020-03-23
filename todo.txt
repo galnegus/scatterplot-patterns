@@ -1,30 +1,33 @@
-TODO: (24/2 - 3/3)
+DOING:
 
 Technical fixes
-  - Fix point hover/select
-  - Fix texture atlas resolution sizes
-  - Fix option data model so that it syncs up (sort of done?)
-  - Fix pattern option so that it doesn't show inactive class patterns
-  - Put scatterplot default options in the scatterplot/constants.js file (e.g. animationEffectSVA)
-  - Do more refactoring on pattern fragment shaders, move stuff into separate glslify functions so there's less code repetition
-  - Radar pattern options: max value > min value constraint
-  - Pattern manager: batch rendering? I.e. one single draw call for all patterns
 
 Method improvements
-  - Add third pattern (???)
-    - Idea: A vortex, very similar to radar but doesn't move according to radius, instead moves both radius and angle over time, also has a bandwidth.
-    - Idea: Random noise, ideally it smoothly transition between different noisy patterns, so it doesn't just jump between frames
-  - Inverting the pattern effect
+  - Sequencing mode, shows one pattern at a time
+    - Discrete vs continuous sequential
+Other shit
+
+
+
+
+
+
+
+TODO:
+
+Technical fixes
+  - Fix option data model so that it syncs up (sort of done?)
+  - Fix pattern option so that it doesn't show inactive class patterns
+
+Method improvements
   - On/off switch for color vs greyscale (for light theme)
-  - Modulate unused parameter of radar/pulse
-    - Radar position by radius (angle is a function of radius)
-    - Radar speed by radius (angle is a function of radius [and time?])
-    - Pulse position by angle (radius is a function of angle)
 
 Other shit
-  - Data import 
-  - Visualize gauss function in pattern options
-  - Dropdowns in specific pattern options (i.e. color options, wave options, speed options) for less clutter
+
+
+
+
+
 
 
 
@@ -37,6 +40,10 @@ Technical fixes
     - Update PatternsOptions.js and PatternOptions.js to use the default options directly from the pattern definitions.
   - Generalize the texture pixel extraction stuff in point.vert => move to function
   - Remove aspect ratio altogether since the bbox is now always square
+  - Put scatterplot default options in the scatterplot/constants.js file (e.g. animationEffectSVA)
+  - Do more refactoring on pattern fragment shaders, move stuff into separate glslify functions so there's less code repetition
+  - Fix texture atlas resolution sizes
+  - Radar pattern options: max value > min value constraint
 
 Method improvements
   - Add filter for time
@@ -55,7 +62,40 @@ Method improvements
   - Add/test abs() on the hue thingy (it's not there, but it prolly should be so you don't get negative/>1 hue)
   - On/off switch for pattern vs color
   - On/off switch for color vs greyscale
+  - Inverting the pattern effect
+  - Phase shift parameter ([0, 1])
+  - Modulate unused parameter of radar/pulse
+    - Radar position by radius (angle is a function of radius)
+    - Pulse position by angle (radius is a function of angle)
+    
+Other shit
+  - Data import 
+  - Being able to export/import pattern settings (json)
+  - Generalize data import so that it can take any csv file
+  - Loading indicator
+    - Do it with redux
+    - Apply when parsing or loading csv file
 
+
+
+
+
+
+
+
+DROPPED (for now):
+
+Technical fixes
+  - Fix point hover/select
+  - Pattern manager: batch rendering? I.e. one single draw call for all patterns
+
+Method improvements
+  - Modulate unused parameter of radar/pulse
+    - Radar speed by radius (angle is a function of radius [and time?])
 
 Other shit
-
+  - Visualize gauss function in pattern options
+  - Dropdowns in specific pattern options (i.e. color options, wave options, speed options) for less clutter
+  - Add third pattern (???)
+    - Idea: A vortex, very similar to radar but doesn't move according to radius, instead moves both radius and angle over time, also has a bandwidth.
+    - Idea: Random noise, ideally it smoothly transition between different noisy patterns, so it doesn't just jump between frames

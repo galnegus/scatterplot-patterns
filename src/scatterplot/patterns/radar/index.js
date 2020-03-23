@@ -2,15 +2,16 @@ import vert from '../pattern.vert';
 import frag from './radar.frag';
 
 export const defaultOptions = {
-  hsvColor: [0.8, 1, 1],
   gamma1: 2.0,
   gamma2: 2.0,
   maxValue: 1,
   minValue: 0.5,
+  phaseShift: 0,
   cyclesPerSecond: 1,
   nSpokes: 2,
   direction: 1,
   invert: 0,
+  curve: 0,
   hueVariation: 0.05,
   hueVariationPeriod: 2,
 }
@@ -42,10 +43,12 @@ export default function createRadarDraw(regl, fbo) {
       gamma2: regl.prop('gamma2'),
       maxValue: regl.prop('maxValue'),
       minValue: regl.prop('minValue'),
+      phaseShift: regl.prop('phaseShift'),
       cyclesPerSecond: regl.prop('cyclesPerSecond'),
       nSpokes: regl.prop('nSpokes'),
       direction: regl.prop('direction'),
       invert: regl.prop('invert'),
+      curve: regl.prop('curve'),
       hueVariation: regl.prop('hueVariation'),
       hueVariationPeriod: regl.prop('hueVariationPeriod'),
     },
@@ -55,8 +58,8 @@ export default function createRadarDraw(regl, fbo) {
 
   return (fbo, texAtlasSize, texAtlasIndex, time, animationMix, useColors, options) => {
     const { 
-      hsvColor, gamma1, gamma2, maxValue, minValue, cyclesPerSecond,
-      nSpokes, direction, invert, hueVariation, hueVariationPeriod,
+      hsvColor, gamma1, gamma2, maxValue, minValue, phaseShift, cyclesPerSecond,
+      nSpokes, direction, invert, curve, hueVariation, hueVariationPeriod,
     } = { ...defaultOptions, ...options };
 
     drawFn({
@@ -71,10 +74,12 @@ export default function createRadarDraw(regl, fbo) {
       gamma2,
       maxValue,
       minValue,
+      phaseShift,
       cyclesPerSecond,
       nSpokes,
       direction,
       invert,
+      curve,
       hueVariation,
       hueVariationPeriod,
     });

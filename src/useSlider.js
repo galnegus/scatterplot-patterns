@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import _debounce from 'lodash-es/debounce';
 import _isFunction from 'lodash-es/isFunction';
 import { debounceTime } from './constants';
@@ -11,5 +11,11 @@ export default function useSlider(optionName, defaultValue, set, processNewValue
     setValue(newValue);
     updateValue(set, optionName, newValue);
   };
+
+  // this makes it so that if the defaultValue changes, update the underlying state too! (useful for imports)
+  useEffect(() => {
+    if (value !== defaultValue) setValue(defaultValue);
+  }, [defaultValue]);
+
   return [value, onChange];
 }

@@ -24,9 +24,13 @@ uniform float a;
 uniform float c1;
 uniform float c2;
 uniform float minValue;
+uniform float phaseShift;
+uniform float curve;
 
 varying vec2 posMin;
 varying vec2 posMax;
+
+const float PI = 3.1415926535897932384626433832795;
 
 float gauss(in float diff) {
   float c = c1 * when_gt(diff, 0.0) + c2 * when_le(diff, 0.0);
@@ -36,9 +40,12 @@ float gauss(in float diff) {
 void main() {
   vec2 normalizedFragCoord = normalizeFragCoords(resolution, posMin, posMax);
 
-  float dist = distance(normalizedFragCoord, vec2(0.5, 0.5)) * 2.0;
+  vec2 centerDiff = normalizedFragCoord - vec2(0.5, 0.5);
+  float fragAngle = atan(centerDiff.x, centerDiff.y);
 
-  float scaledTime = direction * cyclesPerSecond * time;
+  float dist = distance(normalizedFragCoord, vec2(0.5, 0.5)) * 2.0 + fragAngle * curve * PI;
+
+  float scaledTime = direction * (cyclesPerSecond * time + phaseShift);
 
   float diff = mod(dist - scaledTime, 1.0 / wavesPerCycle);
   float leftDiff = gauss(diff - 1.0 / wavesPerCycle);

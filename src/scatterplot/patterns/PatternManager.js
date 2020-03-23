@@ -16,6 +16,8 @@ export const defaultOptions = {
   [PATTERN_TYPES.RADAR]: defaultRadarOptions,
 };
 
+export const PATTERN_RESOLUTION = [100, 100];
+
 export default class PatternManager {
   #patternDraws;
   #patterns;
@@ -28,7 +30,7 @@ export default class PatternManager {
     if (!regl) throw new Error('PatternManager must have reference to regl object.');
 
     this.fbo = regl.framebuffer({
-      width: 1000, height: 500,
+      width: PATTERN_RESOLUTION[0], height: PATTERN_RESOLUTION[1],
     });
     this.patternDraws = {
       [PATTERN_TYPES.PLAIN]: createPlainDraw(regl, this.fbo),
@@ -44,6 +46,7 @@ export default class PatternManager {
   updateSize() {
     this.maxCategories = Math.max(...Object.keys(this.patterns)) + 1;
     this.atlasSize = [this.maxCategories, 1];
+    this.fbo.resize(this.maxCategories * PATTERN_RESOLUTION[0], PATTERN_RESOLUTION[1]);
   }
 
   // Input: array of pattern options with the category as a property
@@ -101,6 +104,4 @@ export default class PatternManager {
   getAtlasSize() {
     return [...this.atlasSize];
   }
-
-  // get(category) ?
 }

@@ -12,20 +12,6 @@ const keyGen = (() => {
   return () => i++;
 })();
 
-const defaultPulse = (category, hsvColor) => ({
-  type: PATTERN_TYPES.PULSE,
-  category,
-  ...defaultOptions[PATTERN_TYPES.PULSE],
-  hsvColor
-});
-
-const defaultRadar = (category, hsvColor) => ({
-  type: PATTERN_TYPES.RADAR,
-  category,
-  ...defaultOptions[PATTERN_TYPES.RADAR],
-  hsvColor
-});
-
 function toHsvColor(hex) {
   const hsvObj = tinycolor(hex).toHsv();
   return [hsvObj.h / 360, hsvObj.s, hsvObj.v];
@@ -98,7 +84,7 @@ export default function DataOptions({ scatterplot }) {
     <div>
       <Divider />
       <p className="bp3-text-muted" style={{ textAlign: 'center' }}>
-        Click on a cluster to show/hide options.
+        Click on a pattern to show/hide options.
       </p>
       {renderPatternOptions}
 

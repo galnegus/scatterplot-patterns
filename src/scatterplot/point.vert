@@ -100,7 +100,7 @@ void main() {
   //color = texture2D(colorTex, colorTexIndex);
   color = findColor(state.z);
 
-  gl_Position = projection * view * model * vec4(state.x, state.y, color.a * 0.99, 1.0); // depth gets clipped when z = 1.00, so * 0.99!
+  gl_Position = projection * view * model * vec4(state.x, state.y, color.a * 0.99, 1); // depth gets clipped when z = 1.00, so * 0.99!
 
   // The final scaling consists of linear scaling in [0, 1] and log scaling
   // in [1, [

@@ -18,8 +18,10 @@ export default function PulseOptions({ pattern, setPattern }) {
   const [c1, c1Change] = useSlider('c1', pattern.c1, setPattern);
   const [c2, c2Change] = useSlider('c2', pattern.c2, setPattern);
   const [minValue, minValueChange] = useSlider('minValue', pattern.minValue, setPattern);
+  const [phaseShift, phaseShiftChange] = useSlider('phaseShift', pattern.phaseShift, setPattern);
   const [cyclesPerSecond, cyclesPerSecondChange] = useSlider('cyclesPerSecond', pattern.cyclesPerSecond, setPattern);
   const [wavesPerCycle, wavesPerCycleChange] = useSlider('wavesPerCycle', pattern.wavesPerCycle, setPattern);
+  const [curve, curveChange] = useSlider('curve', pattern.curve, setPattern);
   const [color, colorChange] = useColorPicker(pattern, setPattern);
   const [hueVariation, hueVariationChange] = useSlider('hueVariation', pattern.hueVariation, setPattern);
   const [hueVariationPeriod, hueVariationPeriodChange] = useSlider('hueVariationPeriod', pattern.hueVariationPeriod, setPattern);
@@ -27,12 +29,15 @@ export default function PulseOptions({ pattern, setPattern }) {
   const directionChange = (event) => setPattern({ direction: event.target.checked ? 1 : -1 });
   const invertChange = (event) => setPattern({ invert: event.target.checked ? 1 : 0 });
 
+  const direction = pattern.direction === 1;
+  const invert = pattern.invert === 1;
+
   return (
     <>
       <span className="option-title bp3-text-muted">Wave Parameters</span>
       <FormGroup>
         <Switch
-          defaultChecked={pattern.direction === 1}
+          checked={direction}
           label="Direction"
           onChange={directionChange}
           innerLabel="In"
@@ -42,7 +47,7 @@ export default function PulseOptions({ pattern, setPattern }) {
       </FormGroup>
       <FormGroup>
         <Switch
-          defaultChecked={pattern.invert === 1}
+          checked={invert}
           label="Invert"
           onChange={invertChange}
           innerLabel="No"
@@ -111,6 +116,20 @@ export default function PulseOptions({ pattern, setPattern }) {
         />
       </FormGroup>
       <FormGroup
+        label="Phase shift"
+        inline={true}
+      >
+        <Slider
+          stepSize={0.01}
+          min={0}
+          max={1}
+          labelStepSize={1}
+          value={phaseShift}
+          onChange={phaseShiftChange}
+          fill={true}
+        />
+      </FormGroup>
+      <FormGroup
         label="Cycles/s"
         inline={true}
       >
@@ -137,6 +156,20 @@ export default function PulseOptions({ pattern, setPattern }) {
           labelStepSize={5}
           value={wavesPerCycle}
           onChange={wavesPerCycleChange}
+          fill={true}
+        />
+      </FormGroup>
+      <FormGroup
+        label="Curve"
+        inline={true}
+      >
+        <Slider
+          stepSize={0.01}
+          min={-5}
+          max={5}
+          labelStepSize={10}
+          value={curve}
+          onChange={curveChange}
           fill={true}
         />
       </FormGroup>

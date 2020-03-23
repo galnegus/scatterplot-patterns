@@ -18,10 +18,13 @@ uniform float gamma1;
 uniform float gamma2;
 uniform float maxValue;
 uniform float minValue;
+uniform float phaseShift;
 uniform float cyclesPerSecond;
 uniform float nSpokes;
 uniform float direction;
 uniform float invert;
+uniform float curve;
+
 uniform vec3 animationMix;
 
 varying vec2 posMin;
@@ -29,10 +32,6 @@ varying vec2 posMax;
 
 const float PI = 3.1415926535897932384626433832795;
 const float TAU = 6.2831853071795864769252867665590;
-
-float coolAbs(in float x) {
-  return -abs(x - 1.0) + 1.0;
-} 
 
 float angleDifference(in float a, in float b, out float gamma) {
   float diff1 = mod((a - b), TAU / nSpokes);
@@ -48,12 +47,17 @@ float angleDifference(in float a, in float b, out float gamma) {
 void main() {
   vec2 normalizedFragCoord = normalizeFragCoords(resolution, posMin, posMax);
 
-  float scaledTime = direction * time * cyclesPerSecond;
+  float centerDist = distance(normalizedFragCoord, vec2(0.5, 0.5)) * 2.0;
+  //float scaledTime = direction * ((1.0 + centerDist * 1.0) * cyclesPerSecond * time + phaseShift);
+  float scaledTime = direction * (cyclesPerSecond * time + phaseShift);
 
   float timeAngle = scaledTime * TAU;
 
-  vec2 centerDist = normalizedFragCoord - vec2(0.5, 0.5);
-  float fragAngle = atan(centerDist.x, centerDist.y) + PI; // from [-pi, pi] to [0, 2pi]
+  vec2 centerDiff = normalizedFragCoord - vec2(0.5, 0.5);
+  float fragAngle = atan(centerDiff.x, centerDiff.y) + PI; // from [-pi, pi] to [0, 2pi]
+
+  fragAngle = mod(fragAngle + centerDist * PI * curve, TAU);
+
   float gamma;
   float angleDist = angleDifference(fragAngle, timeAngle, gamma) * nSpokes / PI;
 

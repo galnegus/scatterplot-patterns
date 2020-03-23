@@ -2,7 +2,6 @@ precision mediump float;
 
 attribute vec2 position;
 
-uniform vec2 resolution;
 uniform float texAtlasIndex;
 uniform vec2 texAtlasSize;
 uniform float time;

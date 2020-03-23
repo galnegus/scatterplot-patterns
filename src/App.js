@@ -3,6 +3,7 @@ import { useSelector, shallowEqual } from 'react-redux'
 import createScatterplot from './scatterplot';
 import Sidebar from './Sidebar';
 import Meta from './Meta';
+import LoadingOverlay from './LoadingOverlay';
 import { defaultValues } from './constants';
 
 function initScatterplot(canvas, setScatterplot, initColors) {
@@ -57,6 +58,7 @@ function App() {
         </div>
       </div>
       <Sidebar scatterplot={scatterplot} />
+      <LoadingOverlay />
       <style jsx>{`
         .App {
           background-color: ${isDarkTheme ? darkBg : lightBg};

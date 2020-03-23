@@ -2,15 +2,16 @@ import vert from '../pattern.vert';
 import frag from './pulse.frag';
 
 export const defaultOptions = {
-  hsvColor: [0.5, 1, 1],
   a: 1,
   c1: 0.1,
   c2: 0.1,
   minValue: 0.5,
+  phaseShift: 0,
   cyclesPerSecond: 1,
   wavesPerCycle: 1,
   direction: 1,
   invert: 0,
+  curve: 0,
   hueVariation: 0.05,
   hueVariationPeriod: 2,
 };
@@ -42,10 +43,12 @@ export default function createPulseDraw(regl, fbo) {
       c1: regl.prop('c1'),
       c2: regl.prop('c2'),
       minValue: regl.prop('minValue'),
+      phaseShift: regl.prop('phaseShift'),
       cyclesPerSecond: regl.prop('cyclesPerSecond'),
       wavesPerCycle: regl.prop('wavesPerCycle'),
       direction: regl.prop('direction'),
       invert: regl.prop('invert'),
+      curve: regl.prop('curve'),
       hueVariation: regl.prop('hueVariation'),
       hueVariationPeriod: regl.prop('hueVariationPeriod'),
     },
@@ -55,8 +58,8 @@ export default function createPulseDraw(regl, fbo) {
 
   return (fbo, texAtlasSize, texAtlasIndex, time, animationMix, useColors, options) => {
     const {
-      hsvColor, a, c1, c2, minValue, cyclesPerSecond, wavesPerCycle,
-      direction, invert, hueVariation, hueVariationPeriod
+      hsvColor, a, c1, c2, minValue, phaseShift, cyclesPerSecond, wavesPerCycle,
+      direction, invert, curve, hueVariation, hueVariationPeriod
     } = { ...defaultOptions, ...options};
     
     drawFn({
@@ -71,10 +74,12 @@ export default function createPulseDraw(regl, fbo) {
       c1,
       c2,
       minValue,
+      phaseShift,
       cyclesPerSecond,
       wavesPerCycle,
       direction,
       invert,
+      curve,
       hueVariation,
       hueVariationPeriod,
     });

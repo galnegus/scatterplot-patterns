@@ -18,8 +18,10 @@ export default function RadarOptions({ pattern, setPattern }) {
   const [gamma2, gamma2Change] = useSlider('gamma2', pattern.gamma2, setPattern);
   const [maxValue, maxValueChange] = useSlider('maxValue', pattern.maxValue, setPattern);
   const [minValue, minValueChange] = useSlider('minValue', pattern.minValue, setPattern);
+  const [phaseShift, phaseShiftChange] = useSlider('phaseShift', pattern.phaseShift, setPattern);
   const [cyclesPerSecond, cyclesPerSecondChange] = useSlider('cyclesPerSecond', pattern.cyclesPerSecond, setPattern);
   const [nSpokes, nSpokesChange] = useSlider('nSpokes', pattern.nSpokes, setPattern);
+  const [curve, curveChange] = useSlider('curve', pattern.curve, setPattern);
   const [color, colorChange] = useColorPicker(pattern, setPattern);
   const [hueVariation, hueVariationChange] = useSlider('hueVariation', pattern.hueVariation, setPattern);
   const [hueVariationPeriod, hueVariationPeriodChange] = useSlider('hueVariationPeriod', pattern.hueVariationPeriod, setPattern);
@@ -27,12 +29,15 @@ export default function RadarOptions({ pattern, setPattern }) {
   const directionChange = (event) => setPattern({ direction: event.target.checked ? 1 : -1 });
   const invertChange = (event) => setPattern({ invert: event.target.checked ? 1 : 0 });
 
+  const direction = pattern.direction === 1;
+  const invert = pattern.invert === 1;
+
   return (
     <>
       <span className="option-title bp3-text-muted">Rotation Parameters</span>
       <FormGroup>
         <Switch
-          defaultChecked={pattern.direction === 1}
+          checked={direction}
           label="Direction"
           onChange={directionChange}
           innerLabel="Counter-clockwise"
@@ -42,7 +47,7 @@ export default function RadarOptions({ pattern, setPattern }) {
       </FormGroup>
       <FormGroup>
         <Switch
-          defaultChecked={pattern.invert === 1}
+          checked={invert}
           label="Invert"
           onChange={invertChange}
           innerLabel="No"
@@ -90,7 +95,10 @@ export default function RadarOptions({ pattern, setPattern }) {
           max={1}
           labelStepSize={1}
           value={maxValue}
-          onChange={maxValueChange}
+          onChange={(newValue) => { 
+            if (newValue > minValue) maxValueChange(newValue);
+            else if (maxValue !== minValue) maxValueChange(minValue);
+          }}
           labelRenderer={renderPercentage}
           fill={true}
         />
@@ -105,8 +113,25 @@ export default function RadarOptions({ pattern, setPattern }) {
           max={1}
           labelStepSize={1}
           value={minValue}
-          onChange={minValueChange}
+          onChange={(newValue) => {
+            if (newValue < maxValue) minValueChange(newValue);
+            else if (minValue !== maxValue) minValueChange(maxValue);
+          }}
           labelRenderer={renderPercentage}
+          fill={true}
+        />
+      </FormGroup>
+      <FormGroup
+        label="Phase shift"
+        inline={true}
+      >
+        <Slider
+          stepSize={0.01}
+          min={0}
+          max={1}
+          labelStepSize={1}
+          value={phaseShift}
+          onChange={phaseShiftChange}
           fill={true}
         />
       </FormGroup>
@@ -136,6 +161,20 @@ export default function RadarOptions({ pattern, setPattern }) {
           labelStepSize={9}
           value={nSpokes}
           onChange={nSpokesChange}
+          fill={true}
+        />
+      </FormGroup>
+      <FormGroup
+        label="Curve"
+        inline={true}
+      >
+        <Slider
+          stepSize={0.01}
+          min={-5}
+          max={5}
+          labelStepSize={10}
+          value={curve}
+          onChange={curveChange}
           fill={true}
         />
       </FormGroup>
