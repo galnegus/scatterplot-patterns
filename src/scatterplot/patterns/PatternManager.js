@@ -68,7 +68,7 @@ export default class PatternManager {
   #maxCategories = 0;
   #atlasSize = [0, 0];
 
-  #useSequence = true;
+  #useSequence = false;
   #sequencePatternDuration = 2;
   #sequenceTransitionDuration = 0.2;
 
