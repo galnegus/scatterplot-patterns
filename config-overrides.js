@@ -26,6 +26,6 @@ module.exports = override(
   addWebpackModuleRule({
     test: /\.(txt|csv)$/,
     exclude: /node_modules/,
-    use: ['file-loader']
+    use: ['raw-loader']
   })
 );

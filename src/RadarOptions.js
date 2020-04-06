@@ -14,17 +14,17 @@ function renderSeconds(val) {
 }
 
 export default function RadarOptions({ pattern, setPattern }) {
-  const [gamma1, gamma1Change] = useSlider('gamma1', pattern.gamma1, setPattern);
-  const [gamma2, gamma2Change] = useSlider('gamma2', pattern.gamma2, setPattern);
-  const [maxValue, maxValueChange] = useSlider('maxValue', pattern.maxValue, setPattern);
-  const [minValue, minValueChange] = useSlider('minValue', pattern.minValue, setPattern);
-  const [phaseShift, phaseShiftChange] = useSlider('phaseShift', pattern.phaseShift, setPattern);
-  const [cyclesPerSecond, cyclesPerSecondChange] = useSlider('cyclesPerSecond', pattern.cyclesPerSecond, setPattern);
-  const [nSpokes, nSpokesChange] = useSlider('nSpokes', pattern.nSpokes, setPattern);
-  const [curve, curveChange] = useSlider('curve', pattern.curve, setPattern);
+  const [gamma1, gamma1Change] = useSlider(pattern, setPattern, 'gamma1');
+  const [gamma2, gamma2Change] = useSlider(pattern, setPattern, 'gamma2');
+  const [maxValue, maxValueChange] = useSlider(pattern, setPattern, 'maxValue');
+  const [minValue, minValueChange] = useSlider(pattern, setPattern, 'minValue');
+  const [phaseShift, phaseShiftChange] = useSlider(pattern, setPattern, 'phaseShift');
+  const [cyclesPerSecond, cyclesPerSecondChange] = useSlider(pattern, setPattern, 'cyclesPerSecond');
+  const [nSpokes, nSpokesChange] = useSlider(pattern, setPattern, 'nSpokes');
+  const [curve, curveChange] = useSlider(pattern, setPattern, 'curve');
   const [color, colorChange] = useColorPicker(pattern, setPattern);
-  const [hueVariation, hueVariationChange] = useSlider('hueVariation', pattern.hueVariation, setPattern);
-  const [hueVariationPeriod, hueVariationPeriodChange] = useSlider('hueVariationPeriod', pattern.hueVariationPeriod, setPattern);
+  const [hueVariation, hueVariationChange] = useSlider(pattern, setPattern, 'hueVariation');
+  const [hueVariationPeriod, hueVariationPeriodChange] = useSlider(pattern, setPattern, 'hueVariationPeriod');
 
   const directionChange = (event) => setPattern({ direction: event.target.checked ? 1 : -1 });
   const invertChange = (event) => setPattern({ invert: event.target.checked ? 1 : 0 });

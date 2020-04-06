@@ -10,9 +10,12 @@ function renderPercentage(val) {
 }
 
 export default function ScatterplotOptions({ scatterplot }) {
-  const [pointSize, pointSizeChange] = useSlider('pointSize', defaultValues.pointSize, scatterplot && scatterplot.set);
-  const [animationMix, animationMixChange] = useSlider('animationMix', defaultValues.animationMix, scatterplot && scatterplot.set);
+  const [pointSize, pointSizeChange] = useSlider(defaultValues, scatterplot && scatterplot.set, 'pointSize');
+  const [animationMix, animationMixChange] = useSlider(defaultValues, scatterplot && scatterplot.set, 'animationMix');
   const [animateDepth, setAnimateDepth] = useState(false);
+  const [useSequence, setUseSequence] = useState(false);
+  const [patternDuration, patternDurationChange] = useSlider(defaultValues, scatterplot && scatterplot.set, 'sequencePatternDuration');
+  const [transitionDuration, transitionDurationChange] = useSlider(defaultValues, scatterplot && scatterplot.set, 'sequenceTransitionDuration');
 
   const showPatternsChange = (event) => scatterplot.set({ 'showPatterns': event.target.checked });
   const useColorsChange = (event) => scatterplot.set({ 'useColors': event.target.checked });
@@ -28,6 +31,11 @@ export default function ScatterplotOptions({ scatterplot }) {
     else
       animationMixChange([0, 1, 0]);
   };
+
+  const useSequenceChange = (event) => {
+    setUseSequence(event.target.checked);
+    scatterplot && scatterplot.set({ useSequence: event.target.checked });
+  }
 
   return (
     <div>
@@ -77,6 +85,56 @@ export default function ScatterplotOptions({ scatterplot }) {
           fill={true}
         />
       </FormGroup>
+
+       <Divider />
+      <span className="option-title bp3-text-muted">Sequence mode</span>
+
+      <FormGroup>
+        <Switch
+          checked={useSequence}
+          label="Enable sequence mode"
+          onChange={useSequenceChange}
+          innerLabel="No"
+          innerLabelChecked="Yes"
+          alignIndicator={Alignment.RIGHT}
+        />
+      </FormGroup>
+
+      { useSequence && (
+        <>
+          <FormGroup
+            label="Duration"
+            inline={true}
+          >
+            <Slider
+              stepSize={0.01}
+              min={0}
+              max={5}
+              labelStepSize={5}
+              labelPrecision={1}
+              value={patternDuration}
+              onChange={patternDurationChange}
+              fill={true}
+            />
+          </FormGroup>
+
+          <FormGroup
+            label="Transition"
+            inline={true}
+          >
+            <Slider
+              stepSize={0.01}
+              min={0}
+              max={1}
+              labelStepSize={1}
+              labelPrecision={1}
+              value={transitionDuration}
+              onChange={transitionDurationChange}
+              fill={true}
+            />
+          </FormGroup>
+        </>
+      )}
 
       <Divider />
       <span className="option-title bp3-text-muted">Animation mix</span>
@@ -129,7 +187,7 @@ export default function ScatterplotOptions({ scatterplot }) {
           disabled={animateDepth}
         />
       </FormGroup>
-       <FormGroup>
+      <FormGroup>
         <Switch
           checked={animateDepth}
           label="Depth (experimental)"

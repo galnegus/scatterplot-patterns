@@ -120,9 +120,9 @@ export default function DataLoader({ scatterplot }) {
   const loadClickHandler = async () => {
     const csv = inputFile ? inputFile : dataSources[dataSource].csv;
 
-    await dispatch(setLoading(true));
+    dispatch(setLoading(true));
     const { results, nCategories } = await loadData(csv, dataOptions);
-    await dispatch(setLoading(false));
+    dispatch(setLoading(false));
 
     dispatch(setMaxCategories(nCategories));
     scatterplot.draw(results);
@@ -130,9 +130,9 @@ export default function DataLoader({ scatterplot }) {
   const inputFileChange = async () =>  {
     if (fileInputRef.current.files.length === 0) return;
 
-    await dispatch(setLoading(true));
+    dispatch(setLoading(true));
     inputFieldsRef.current = await parseData(fileInputRef.current.files[0]);
-    await dispatch(setLoading(false));
+    dispatch(setLoading(false));
 
     setInputFile(fileInputRef.current.files[0]);
     setDataSource('');

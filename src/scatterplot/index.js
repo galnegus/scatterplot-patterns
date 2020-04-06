@@ -912,6 +912,22 @@ const createScatterplot = ({
     useColors = newUseColors;
   }
 
+  const setUseSequence = (newUseSequence) => {
+    if (newUseSequence === null) return;
+
+    patternManager.setSequenceOptions({ useSequence: newUseSequence });
+  }
+  const setSequencePatternDuration = (newSequencePatternDuration) => {
+    if (newSequencePatternDuration === null) return;
+
+    patternManager.setSequenceOptions({ sequencePatternDuration: newSequencePatternDuration });
+  }
+  const setSequenceTransitionDuration = (newSequenceTransitionDuration) => {
+    if (newSequenceTransitionDuration === null) return;
+
+    patternManager.setSequenceOptions({ sequenceTransitionDuration: newSequenceTransitionDuration });
+  }
+
   /**
    * Update Regl's viewport, drawingBufferWidth, and drawingBufferHeight
    *
@@ -966,6 +982,9 @@ const createScatterplot = ({
     animateDepth: newAnimateDepth = null,
     showPatterns: newShowPatterns = null,
     useColors: newUseColors = null,
+    useSequence: newUseSequence = null,
+    sequencePatternDuration: newSequencePatternDuration = null,
+    sequenceTransitionDuration: newSequenceTransitionDuration = null,
   } = {}) => {
     setBackground(newBackground);
     setBackgroundImage(newBackgroundImage);
@@ -987,6 +1006,9 @@ const createScatterplot = ({
     setAnimateDepth(newAnimateDepth);
     setShowPatterns(newShowPatterns);
     setUseColors(newUseColors);
+    setUseSequence(newUseSequence);
+    setSequencePatternDuration(newSequencePatternDuration);
+    setSequenceTransitionDuration(newSequenceTransitionDuration);
 
     updateViewAspectRatio();
     camera.refresh();

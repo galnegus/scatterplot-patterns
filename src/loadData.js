@@ -18,7 +18,7 @@ export default function loadData(csv, dataOptions) {
       header: true,
       dynamicTyping: true,
       skipEmptyLines: true,
-      download: true,
+      worker: true,
       step: (results) => {
         if (!categories.has(results.data[catField]))
           categories.set(results.data[catField], nCategories++);

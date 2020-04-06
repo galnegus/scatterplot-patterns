@@ -14,6 +14,7 @@ export default function parseData(csvFile) {
       //header: true,
       dynamicTyping: true,
       skipEmptyLines: true,
+      worker: true,
       step: (results) => {
         if (!parsedFields) {
           fieldNames = [...results.data];

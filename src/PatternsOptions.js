@@ -3,7 +3,6 @@ import { useSelector, shallowEqual } from 'react-redux'
 import tinycolor from 'tinycolor2';
 import { Divider } from '@blueprintjs/core';
 import PatternOptions from './PatternOptions';
-import { PATTERN_TYPES, defaultOptions } from './scatterplot/patterns/PatternManager';
 import { defaultPatterns } from './constants';
 
 // gives you a new key when you call it.

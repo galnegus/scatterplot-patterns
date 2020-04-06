@@ -14,17 +14,17 @@ function renderSeconds(val) {
 }
 
 export default function PulseOptions({ pattern, setPattern }) {
-  const [a, aChange] = useSlider('a', pattern.a, setPattern);
-  const [c1, c1Change] = useSlider('c1', pattern.c1, setPattern);
-  const [c2, c2Change] = useSlider('c2', pattern.c2, setPattern);
-  const [minValue, minValueChange] = useSlider('minValue', pattern.minValue, setPattern);
-  const [phaseShift, phaseShiftChange] = useSlider('phaseShift', pattern.phaseShift, setPattern);
-  const [cyclesPerSecond, cyclesPerSecondChange] = useSlider('cyclesPerSecond', pattern.cyclesPerSecond, setPattern);
-  const [wavesPerCycle, wavesPerCycleChange] = useSlider('wavesPerCycle', pattern.wavesPerCycle, setPattern);
-  const [curve, curveChange] = useSlider('curve', pattern.curve, setPattern);
-  const [color, colorChange] = useColorPicker(pattern, setPattern);
-  const [hueVariation, hueVariationChange] = useSlider('hueVariation', pattern.hueVariation, setPattern);
-  const [hueVariationPeriod, hueVariationPeriodChange] = useSlider('hueVariationPeriod', pattern.hueVariationPeriod, setPattern);
+  const [a, aChange] = useSlider(pattern, setPattern, 'a');
+  const [c1, c1Change] = useSlider(pattern, setPattern, 'c1');
+  const [c2, c2Change] = useSlider(pattern, setPattern, 'c2');
+  const [minValue, minValueChange] = useSlider(pattern, setPattern, 'minValue');
+  const [phaseShift, phaseShiftChange] = useSlider(pattern, setPattern, 'phaseShift');
+  const [cyclesPerSecond, cyclesPerSecondChange] = useSlider(pattern, setPattern, 'cyclesPerSecond');
+  const [wavesPerCycle, wavesPerCycleChange] = useSlider(pattern, setPattern, 'wavesPerCycle');
+  const [curve, curveChange] = useSlider(pattern, setPattern, 'curve');
+  const [color, colorChange] = useColorPicker(pattern);
+  const [hueVariation, hueVariationChange] = useSlider(pattern, setPattern, 'hueVariation');
+  const [hueVariationPeriod, hueVariationPeriodChange] = useSlider(pattern, setPattern, 'hueVariationPeriod');
 
   const directionChange = (event) => setPattern({ direction: event.target.checked ? 1 : -1 });
   const invertChange = (event) => setPattern({ invert: event.target.checked ? 1 : 0 });

@@ -5,6 +5,8 @@ export const defaultValues = {
   useColors: true,
   pointSize: 5,
   animationMix: [0, 1, 0],
+  sequencePatternDuration: 2,
+  sequenceTransitionDuration: 0.2,
 };
 
 export const defaultPatterns = [
@@ -72,5 +74,6 @@ export const defaultPatterns = [
 ];
 
 export const debounceTime = 100;
+export const throttleTime = 33;
 
 

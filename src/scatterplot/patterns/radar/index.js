@@ -1,4 +1,4 @@
-import vert from '../pattern.vert';
+import vert from './radar.vert';
 import frag from './radar.frag';
 
 export const defaultOptions = {
@@ -35,6 +35,7 @@ export default function createRadarDraw(regl, fbo) {
       texAtlasIndex: regl.prop('texAtlasIndex'),
       texAtlasSize: regl.prop('texAtlasSize'),
       time: regl.prop('time'),
+      sequenceValue: regl.prop('sequenceValue'),
       animationMix: regl.prop('animationMix'),
       useColors: regl.prop('useColors'),
       
@@ -56,7 +57,7 @@ export default function createRadarDraw(regl, fbo) {
     framebuffer: fbo,
   });
 
-  return (fbo, texAtlasSize, texAtlasIndex, time, animationMix, useColors, options) => {
+  return (fbo, texAtlasSize, texAtlasIndex, time, sequenceValue, animationMix, useColors, options) => {
     const { 
       hsvColor, gamma1, gamma2, maxValue, minValue, phaseShift, cyclesPerSecond,
       nSpokes, direction, invert, curve, hueVariation, hueVariationPeriod,
@@ -67,6 +68,7 @@ export default function createRadarDraw(regl, fbo) {
       texAtlasSize,
       texAtlasIndex,
       time,
+      sequenceValue,
       animationMix,
       useColors,
       hsvColor,

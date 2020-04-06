@@ -18,40 +18,83 @@ export const defaultOptions = {
 
 export const PATTERN_RESOLUTION = [100, 100];
 
+function computeSequenceValue(sequenceInit, index, transitionLength) {
+  let sequenceValue = sequenceInit - index;
+  if (sequenceValue < 0 || sequenceValue >= 1) {
+    sequenceValue = 0;
+  } else {
+    if (sequenceValue < transitionLength)
+      sequenceValue /= transitionLength;
+    else if (sequenceValue >= 1 - transitionLength)
+      sequenceValue = (-sequenceValue + 1) / transitionLength;
+    else
+      sequenceValue = 1;
+  }
+
+  return sequenceValue;
+}
+
+// modulo but with negative numbers too
+function mod(m, n) {
+    return ((m % n) + n) % n;
+}
+
+function computeSequenceValueWithOverlap(sequenceInit, index, transitionLength, maxCategories) {
+  if (transitionLength <= Number.EPSILON) return computeSequenceValue(sequenceInit, index, transitionLength);
+
+  let sequenceValue = 1;
+  sequenceValue = mod(sequenceInit - index + (transitionLength / 2), maxCategories) - transitionLength / 2;
+
+  if (sequenceValue + transitionLength / 2 < 0 || sequenceValue - transitionLength / 2 >= 1) {
+    sequenceValue = 0;
+  } else {
+    if (sequenceValue < transitionLength / 2)
+      sequenceValue = sequenceValue / transitionLength + 0.5; // (sequenceValue + transitionLength / 2) / transitionLength
+    else if (sequenceValue >= 1 - transitionLength / 2)
+      sequenceValue = (1 - sequenceValue) / transitionLength + 0.5; // (-(sequenceValue - transitionLength / 2) + 1) / transitionLength
+    else
+      sequenceValue = 1;
+  }
+
+  return sequenceValue;
+}
+
 export default class PatternManager {
   #patternDraws;
-  #patterns;
   #fbo;
   #regl;
-  #maxCategories;
-  #atlasSize;
+
+  #patterns = {};
+  #maxCategories = 0;
+  #atlasSize = [0, 0];
+
+  #useSequence = true;
+  #sequencePatternDuration = 2;
+  #sequenceTransitionDuration = 0.2;
 
   constructor(regl) {
     if (!regl) throw new Error('PatternManager must have reference to regl object.');
 
-    this.fbo = regl.framebuffer({
+    this.#fbo = regl.framebuffer({
       width: PATTERN_RESOLUTION[0], height: PATTERN_RESOLUTION[1],
     });
-    this.patternDraws = {
-      [PATTERN_TYPES.PLAIN]: createPlainDraw(regl, this.fbo),
-      [PATTERN_TYPES.PULSE]: createPulseDraw(regl, this.fbo),
-      [PATTERN_TYPES.RADAR]: createRadarDraw(regl, this.fbo),
+    this.#patternDraws = {
+      [PATTERN_TYPES.PLAIN]: createPlainDraw(regl, this.#fbo),
+      [PATTERN_TYPES.PULSE]: createPulseDraw(regl, this.#fbo),
+      [PATTERN_TYPES.RADAR]: createRadarDraw(regl, this.#fbo),
     };
-    this.patterns = {};
-    this.regl = regl;
-    this.maxCategories = 0;
-    this.atlasSize = [0, 0];
+    this.#regl = regl;
   }
 
   updateSize() {
-    this.maxCategories = Math.max(...Object.keys(this.patterns)) + 1;
-    this.atlasSize = [this.maxCategories, 1];
-    this.fbo.resize(this.maxCategories * PATTERN_RESOLUTION[0], PATTERN_RESOLUTION[1]);
+    this.#maxCategories = Math.max(...Object.keys(this.#patterns)) + 1;
+    this.#atlasSize = [this.#maxCategories, 1];
+    this.#fbo.resize(this.#maxCategories * PATTERN_RESOLUTION[0], PATTERN_RESOLUTION[1]);
   }
 
   // Input: array of pattern options with the category as a property
   setAll(patterns) {
-    const categoriesToRemove = new Set(Object.keys(this.patterns));
+    const categoriesToRemove = new Set(Object.keys(this.#patterns));
 
     patterns.forEach((pattern) => {
       categoriesToRemove.delete(pattern.category.toString());
@@ -65,43 +108,54 @@ export default class PatternManager {
   }
 
   set(category, options) {
-    if (_has(this.patterns, category))
-      this.patterns[category] = { ...this.patterns[category], ...options };
+    if (_has(this.#patterns, category))
+      this.#patterns[category] = { ...this.#patterns[category], ...options };
     else
-      this.patterns[category] = options;
+      this.#patterns[category] = options;
 
     this.updateSize();
   }
 
+  setSequenceOptions({ useSequence = null, sequencePatternDuration = null, sequenceTransitionDuration = null }) {
+    if (useSequence !== null) this.#useSequence = useSequence;
+    if (sequencePatternDuration !== null) this.#sequencePatternDuration = sequencePatternDuration;
+    if (sequenceTransitionDuration !== null) this.#sequenceTransitionDuration = sequenceTransitionDuration;
+  }
+
   destroy(category) {
-    delete this.patterns[category];
+    delete this.#patterns[category];
     this.updateSize();
   }
 
   draw(time, animationMix, useColors, showPatterns) {
-    for (let i = 0; i < this.maxCategories; i += 1) {
-      if (!_has(this.patterns, i)) continue;
+    let sequenceValue = 1;
+    const sequenceInit = (time / this.#sequencePatternDuration) % this.#maxCategories;
+
+    for (let i = 0; i < this.#maxCategories; i += 1) {
+      if (!_has(this.#patterns, i)) continue;
+
+      if (this.#useSequence) sequenceValue = computeSequenceValueWithOverlap(sequenceInit, i, this.#sequenceTransitionDuration, this.#maxCategories);
 
       if (showPatterns)
-        this.patternDraws[this.patterns[i].type](this.fbo, this.atlasSize, i, time, animationMix, useColors, this.patterns[i]);
+        this.#patternDraws[this.#patterns[i].type](this.#fbo, this.#atlasSize, i, time, sequenceValue, animationMix, useColors, this.#patterns[i]);
       else
-        this.patternDraws[PATTERN_TYPES.PLAIN](this.fbo, this.atlasSize, i, time, useColors, this.patterns[i])
+        this.#patternDraws[PATTERN_TYPES.PLAIN](this.#fbo, this.#atlasSize, i, time, sequenceValue, animationMix, useColors, this.#patterns[i])
     }
   }
 
   clear() {
-    this.regl.clear({
+    this.#regl.clear({
       color: [0, 0, 0, 0],
       depth: 1,
-      framebuffer: this.fbo,
+      framebuffer: this.#fbo,
     });
   }
 
   getTexture() {
-    return this.fbo.color[0];
+    return this.#fbo.color[0];
   }
 
   getAtlasSize() {
-    return [...this.atlasSize];
+    return [...this.#atlasSize];
   }
 }

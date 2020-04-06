@@ -3,9 +3,10 @@ DOING:
 Technical fixes
 
 Method improvements
-  - Sequencing mode, shows one pattern at a time
-    - Discrete vs continuous sequential
+
 Other shit
+
+
 
 
 
@@ -31,6 +32,7 @@ Other shit
 
 
 
+
 DONE:
 
 Technical fixes
@@ -44,6 +46,11 @@ Technical fixes
   - Do more refactoring on pattern fragment shaders, move stuff into separate glslify functions so there's less code repetition
   - Fix texture atlas resolution sizes
   - Radar pattern options: max value > min value constraint
+  - Refactor useSlider hook
+    - Remove debounce
+    - Change argument list
+  - Pattern performance improvements
+    - A lot of math in fragment shaders that could be moved to script or vertex shader.
 
 Method improvements
   - Add filter for time
@@ -67,6 +74,14 @@ Method improvements
   - Modulate unused parameter of radar/pulse
     - Radar position by radius (angle is a function of radius)
     - Pulse position by angle (radius is a function of angle)
+  - Sequencing mode, shows one pattern at a time
+    - Discrete vs continuous sequential
+      - Continuous, 3 parameters: length per pattern, transition length, pattern index; output: [0, 1]
+        - 3 steps:
+          - first produce number x betwenn [0, n+1)
+          - second output linear between 0-1 for active pattern i, by taking k = x - i, if k not in [0, 1) => k = 0
+          - third map k to [0, 1), [1], (1, 0], according to transition length t,
+              so that when k in [0, t) => [0, 1), k in [t, 1-t) => 1, k in [1-t, 1) => (1, 0]
     
 Other shit
   - Data import 
@@ -88,6 +103,7 @@ DROPPED (for now):
 Technical fixes
   - Fix point hover/select
   - Pattern manager: batch rendering? I.e. one single draw call for all patterns
+  - Loading redux state promise
 
 Method improvements
   - Modulate unused parameter of radar/pulse

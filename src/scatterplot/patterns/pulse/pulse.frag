@@ -5,18 +5,14 @@ precision mediump float;
 #pragma glslify: when_eq = require(glsl-conditionals/when_eq) 
 #pragma glslify: hsv2rgb_smooth = require(../../glsl/hsv2rgb_smooth)
 #pragma glslify: normalizeFragCoords = require(../../glsl/normalizeFragCoords)
-#pragma glslify: hueWave = require(../../glsl/hueWave)
 
 uniform vec3 hsvColor;
-uniform float hueVariation;
-uniform float hueVariationPeriod;
 uniform vec2 resolution;
 uniform float time;
+uniform float sequenceValue;
 uniform bool useColors;
 
-uniform float cyclesPerSecond;
 uniform float wavesPerCycle;
-uniform float direction;
 uniform float invert;
 uniform vec3 animationMix;
 
@@ -24,8 +20,10 @@ uniform float a;
 uniform float c1;
 uniform float c2;
 uniform float minValue;
-uniform float phaseShift;
 uniform float curve;
+
+varying float scaledTime;
+varying float hue;
 
 varying vec2 posMin;
 varying vec2 posMax;
@@ -45,8 +43,6 @@ void main() {
 
   float dist = distance(normalizedFragCoord, vec2(0.5, 0.5)) * 2.0 + fragAngle * curve * PI;
 
-  float scaledTime = direction * (cyclesPerSecond * time + phaseShift);
-
   float diff = mod(dist - scaledTime, 1.0 / wavesPerCycle);
   float leftDiff = gauss(diff - 1.0 / wavesPerCycle);
   float middleDiff = gauss(diff);
@@ -55,9 +51,9 @@ void main() {
   float value = max(leftDiff, max(middleDiff, rightDiff));
 
   value = when_eq(invert, 1.0) * (value * -1.0 + 1.0) + when_eq(invert, 0.0) * value; 
+  value *= sequenceValue;
   value = value * (1.0 - minValue) + minValue;
   
-  float hue = hueWave(hsvColor.x, time, hueVariationPeriod, hueVariation);
   float animateSaturation = mix(1.0, value, animationMix[0]) * float(useColors);
   float animateValue = mix(1.0, value, animationMix[1]);
   float animateAlpha = mix(1.0, value, animationMix[2]);

@@ -27,7 +27,7 @@ export default function createPlainDraw(regl, fbo) {
     framebuffer: fbo,
   });
 
-  return (fbo, atlasSize, atlasIndex, time, useColors, { hsvColor }) => {
+  return (fbo, atlasSize, atlasIndex, time, sequenceValue, animationMix, useColors, { hsvColor }) => {
     drawFn({
       resolution: [fbo.width, fbo.height],
       texAtlasSize: atlasSize,
