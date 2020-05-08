@@ -1,6 +1,7 @@
 DOING:
 
 Technical fixes
+  - Refactor cluster options to use the useSlider hook.
 
 Method improvements
 
@@ -17,12 +18,16 @@ Other shit
 TODO:
 
 Technical fixes
-  - Fix option data model so that it syncs up (sort of done?)
-  - Fix pattern option so that it doesn't show inactive class patterns
 
 Method improvements
-  - On/off switch for color vs greyscale (for light theme)
-
+  - Remove all the sliders that are not needed, maybe make them available through an "advanced mode" toggle or something
+  - Define 5 archetypes for each of radar and pulse
+  - New simple interface:
+    - All patterns are set according to an "archetype"
+    - No sliders at all initally
+    - Speed mode: (1) same (2) different
+    - 
+    - 
 Other shit
 
 
@@ -51,6 +56,8 @@ Technical fixes
     - Change argument list
   - Pattern performance improvements
     - A lot of math in fragment shaders that could be moved to script or vertex shader.
+  - Fix so that the colorless mode actually has the same colors
+
 
 Method improvements
   - Add filter for time
@@ -104,10 +111,13 @@ Technical fixes
   - Fix point hover/select
   - Pattern manager: batch rendering? I.e. one single draw call for all patterns
   - Loading redux state promise
+  - Fix option data model so that it syncs up (sort of done?)
+  - Fix pattern option so that it doesn't show inactive class patterns
 
 Method improvements
   - Modulate unused parameter of radar/pulse
     - Radar speed by radius (angle is a function of radius [and time?])
+  - On/off switch for color vs greyscale (for light theme)
 
 Other shit
   - Visualize gauss function in pattern options

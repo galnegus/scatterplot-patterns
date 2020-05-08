@@ -63,5 +63,9 @@ void main() {
   float animateValue = mix(1.0, value, animationMix[1]);
   float animateAlpha = mix(1.0, value, animationMix[2]);
 
-  gl_FragColor = vec4(hsv2rgb_smooth(vec3(hue, animateSaturation * hsvColor.y, animateValue * hsvColor.z)), animateAlpha);
+  float whenUseColors = when_eq(float(useColors), 1.0);
+  float whenNotUseColors = 1.0 - whenUseColors;
+  float colorValue = whenUseColors * hsvColor.z + whenNotUseColors * 1.0;
+
+  gl_FragColor = vec4(hsv2rgb_smooth(vec3(hue, animateSaturation * hsvColor.y, animateValue * colorValue)), animateAlpha);
 }
