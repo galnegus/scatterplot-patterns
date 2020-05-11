@@ -1,58 +1,18 @@
 import React, { useState } from 'react';
-import _debounce from 'lodash-es/debounce';
 import { FormGroup, Slider, Collapse, Divider, Button, Intent } from '@blueprintjs/core';
+import useSlider from './useSlider';
 import ClusterHeader from './ClusterHeader';
 
-const debounceTime = 500;
-
-const updateX = _debounce((setCluster, newValue) => setCluster({ x: newValue }), debounceTime);
-const updateY = _debounce((setCluster, newValue) => setCluster({ y: newValue }), debounceTime);
-const updateSigma = _debounce((setCluster, newValue) => setCluster({ sigma: newValue }), debounceTime);
-const updateAngle = _debounce((setCluster, newValue) => setCluster({ angle: newValue }), debounceTime);
-const updateAmplitude = _debounce((setCluster, newValue) => setCluster({ amplitude: newValue }), debounceTime);
-const updateN = _debounce((setCluster, newValue) => setCluster({ n: newValue }), debounceTime);
-const updateCategory = _debounce((setCluster, newValue) => setCluster({ category: newValue }), debounceTime);
-
-
 export default function ClusterOptions({ clusterKey, cluster, setCluster, removeCluster }) {
-  const [x, setX] = useState(cluster.x);
-  const [y, setY] = useState(cluster.y);
-  const [sigma, setSigma] = useState(cluster.sigma);
-  const [angle, setAngle] = useState(cluster.angle);
-  const [amplitude, setAmplitude] = useState(cluster.amplitude);
-  const [n, setN] = useState(cluster.n);
-  const [category, setCategory] = useState(cluster.category);
+  const [x, xChange] = useSlider(cluster, setCluster, 'x');
+  const [y, yChange] = useSlider(cluster, setCluster, 'y');
+  const [sigma, sigmaChange] = useSlider(cluster, setCluster, 'sigma');
+  const [angle, angleChange] = useSlider(cluster, setCluster, 'angle');
+  const [amplitude, amplitudeChange] = useSlider(cluster, setCluster, 'amplitude');
+  const [n, nChange] = useSlider(cluster, setCluster, 'n');
+  const [category, categoryChange] = useSlider(cluster, setCluster, 'category');
+
   const [isOpen, setIsOpen] = useState(false);
-
-  const xChange = (newValue) => {
-    setX(newValue);
-    updateX(setCluster, newValue);
-  };
-  const yChange = (newValue) => {
-    setY(newValue);
-    updateY(setCluster, newValue);
-  };
-  const sigmaChange = (newValue) => {
-    setSigma(newValue);
-    updateSigma(setCluster, newValue);
-  };
-  const angleChange = (newValue) => {
-    setAngle(newValue);
-    updateAngle(setCluster, newValue);
-  };
-  const amplitudeChange = (newValue) => {
-    setAmplitude(newValue);
-    updateAmplitude(setCluster, newValue);
-  };
-  const nChange = (newValue) => {
-    setN(newValue);
-    updateN(setCluster, newValue);
-  };
-  const categoryChange = (newValue) => {
-    setCategory(newValue);
-    updateCategory(setCluster, newValue);
-  };
-
   const removeClickHandler = () => removeCluster(clusterKey);
 
   return (

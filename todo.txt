@@ -26,8 +26,18 @@ Method improvements
     - All patterns are set according to an "archetype"
     - No sliders at all initally
     - Speed mode: (1) same (2) different
-    - 
-    - 
+  - New testing interafce:
+    - Intro step
+    - Test step
+    - Final step
+    - Push data, how?
+      - Google sheets:
+        - https://contrafabulists-lessons.github.io/google-sheet-to-github-website/
+        - https://dev.to/bearer/how-to-send-data-to-a-google-spreadsheet-in-2-seconds-1h0
+        - Consider security, i.e. limiting requests
+      - Send email
+        - https://formsubmit.co/
+      - https://www.npmjs.com/package/github-db
 Other shit
 
 

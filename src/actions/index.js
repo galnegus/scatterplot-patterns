@@ -7,7 +7,6 @@ export const toggleTheme = () => ({
   type: TOGGLE_THEME
 });
 
-
 export const setLoading = (value) => ({
   type: SET_LOADING,
   value
