@@ -37,6 +37,7 @@ export default class PatternManager {
   #sequenceTransitionDuration = 0.2;
 
   #partitioningFunc = null;
+  #lastSequence = null;
 
   constructor(regl) {
     if (!regl) throw new Error('PatternManager must have reference to regl object.');
@@ -143,8 +144,9 @@ export default class PatternManager {
       if (this.#useSequence) {
         sequenceValue = this.computeSequenceValueWithOverlap(sequenceInit, i, this.#sequenceTransitionDuration, this.#maxCategories);
         const hardSeqValue = this.computeSequenceValue(sequenceInit, i, 0);
-        if (hardSeqValue === 1 && this.#partitioningFunc !== null) {
+        if (hardSeqValue === 1 && this.#partitioningFunc !== null && this.#lastSequence !== i) {
           this.#partitioningFunc(i);
+          this.#lastSequence = i;
         }
       }
 

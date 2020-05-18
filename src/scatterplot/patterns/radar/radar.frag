@@ -54,6 +54,9 @@ void main() {
   float gamma;
   float angleDist = angleDifference(fragAngle, timeAngle, gamma) * nSpokes / PI;
 
+  // this fixes a bug where some rare pixels are not defined (presumably because of negative value?)
+  angleDist = clamp(angleDist, 0.0, 1.0);
+
   float value = pow(1.0 - angleDist, gamma); // gamma
   value = when_eq(invert, 1.0) * (value * -1.0 + 1.0) + when_eq(invert, 0.0) * value; 
   value *= sequenceValue;
