@@ -799,15 +799,18 @@ const createScatterplot = ({
       let left = 0;
       let right = newPoints.length - 1;
 
-      while (left < right) {
-        if (newPoints[left][2] !== category) left += 1;
-        if (newPoints[right][2] === category) right -= 1;
-
-        if (newPoints[left][2] === category && newPoints[right][2] !== category) {
-          const temp = newPoints[left];
-          newPoints[left] = newPoints[right];
-          newPoints[right] = temp;
+      while (true) { // eslint-disable-line no-constant-condition
+        while (newPoints[left][2] !== category && left < newPoints.length - 1) {
+          left += 1;
         }
+        while (newPoints[right][2] === category && right > 0) {
+          right -= 1;
+        }
+        if (left >= right) break;
+
+        const temp = newPoints[left];
+        newPoints[left] = newPoints[right];
+        newPoints[right] = temp;
       }
 
       stateTex = createStateTexture(newPoints);
