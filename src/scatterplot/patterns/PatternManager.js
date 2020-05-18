@@ -16,47 +16,11 @@ export const defaultOptions = {
   [PATTERN_TYPES.RADAR]: defaultRadarOptions,
 };
 
-export const PATTERN_RESOLUTION = [100, 100];
-
-function computeSequenceValue(sequenceInit, index, transitionLength) {
-  let sequenceValue = sequenceInit - index;
-  if (sequenceValue < 0 || sequenceValue >= 1) {
-    sequenceValue = 0;
-  } else {
-    if (sequenceValue < transitionLength)
-      sequenceValue /= transitionLength;
-    else if (sequenceValue >= 1 - transitionLength)
-      sequenceValue = (-sequenceValue + 1) / transitionLength;
-    else
-      sequenceValue = 1;
-  }
-
-  return sequenceValue;
-}
+export const PATTERN_RESOLUTION = [400, 400];
 
 // modulo but with negative numbers too
 function mod(m, n) {
     return ((m % n) + n) % n;
-}
-
-function computeSequenceValueWithOverlap(sequenceInit, index, transitionLength, maxCategories) {
-  if (transitionLength <= Number.EPSILON) return computeSequenceValue(sequenceInit, index, transitionLength);
-
-  let sequenceValue = 1;
-  sequenceValue = mod(sequenceInit - index + (transitionLength / 2), maxCategories) - transitionLength / 2;
-
-  if (sequenceValue + transitionLength / 2 < 0 || sequenceValue - transitionLength / 2 >= 1) {
-    sequenceValue = 0;
-  } else {
-    if (sequenceValue < transitionLength / 2)
-      sequenceValue = sequenceValue / transitionLength + 0.5; // (sequenceValue + transitionLength / 2) / transitionLength
-    else if (sequenceValue >= 1 - transitionLength / 2)
-      sequenceValue = (1 - sequenceValue) / transitionLength + 0.5; // (-(sequenceValue - transitionLength / 2) + 1) / transitionLength
-    else
-      sequenceValue = 1;
-  }
-
-  return sequenceValue;
 }
 
 export default class PatternManager {
@@ -71,6 +35,8 @@ export default class PatternManager {
   #useSequence = false;
   #sequencePatternDuration = 2;
   #sequenceTransitionDuration = 0.2;
+
+  #partitioningFunc = null;
 
   constructor(regl) {
     if (!regl) throw new Error('PatternManager must have reference to regl object.');
@@ -122,6 +88,46 @@ export default class PatternManager {
     if (sequenceTransitionDuration !== null) this.#sequenceTransitionDuration = sequenceTransitionDuration;
   }
 
+  setPartitioningFunc(func) {
+    this.#partitioningFunc = func;
+  }
+
+  computeSequenceValue(sequenceInit, index, transitionLength) {
+    let sequenceValue = sequenceInit - index;
+    if (sequenceValue < 0 || sequenceValue >= 1) {
+      sequenceValue = 0;
+    } else {
+      if (sequenceValue < transitionLength)
+        sequenceValue /= transitionLength;
+      else if (sequenceValue >= 1 - transitionLength)
+        sequenceValue = (-sequenceValue + 1) / transitionLength;
+      else
+        sequenceValue = 1;
+    }
+
+    return sequenceValue;
+  }
+
+  computeSequenceValueWithOverlap(sequenceInit, index, transitionLength, maxCategories) {
+    if (transitionLength <= Number.EPSILON) return this.computeSequenceValue(sequenceInit, index, transitionLength);
+
+    let sequenceValue = 1;
+    sequenceValue = mod(sequenceInit - index + (transitionLength / 2), maxCategories) - transitionLength / 2;
+
+    if (sequenceValue + transitionLength / 2 < 0 || sequenceValue - transitionLength / 2 >= 1) {
+      sequenceValue = 0;
+    } else {
+      if (sequenceValue < transitionLength / 2)
+        sequenceValue = sequenceValue / transitionLength + 0.5; // (sequenceValue + transitionLength / 2) / transitionLength
+      else if (sequenceValue >= 1 - transitionLength / 2)
+        sequenceValue = (1 - sequenceValue) / transitionLength + 0.5; // (-(sequenceValue - transitionLength / 2) + 1) / transitionLength
+      else
+        sequenceValue = 1;
+    }
+
+    return sequenceValue;
+  }
+
   destroy(category) {
     delete this.#patterns[category];
     this.updateSize();
@@ -134,7 +140,13 @@ export default class PatternManager {
     for (let i = 0; i < this.#maxCategories; i += 1) {
       if (!_has(this.#patterns, i)) continue;
 
-      if (this.#useSequence) sequenceValue = computeSequenceValueWithOverlap(sequenceInit, i, this.#sequenceTransitionDuration, this.#maxCategories);
+      if (this.#useSequence) {
+        sequenceValue = this.computeSequenceValueWithOverlap(sequenceInit, i, this.#sequenceTransitionDuration, this.#maxCategories);
+        const hardSeqValue = this.computeSequenceValue(sequenceInit, i, 0);
+        if (hardSeqValue === 1 && this.#partitioningFunc !== null) {
+          this.#partitioningFunc(i);
+        }
+      }
 
       if (showPatterns)
         this.#patternDraws[this.#patterns[i].type](this.#fbo, this.#atlasSize, i, time, sequenceValue, animationMix, useColors, this.#patterns[i]);

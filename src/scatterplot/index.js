@@ -792,6 +792,26 @@ const createScatterplot = ({
     bboxTex = createBBoxTexture(bboxByCategory);
 
     isInit = true;
+
+    // allows patternManager to partition points so that points of a given category are rendered last
+    // uses hoare partitioning scheme
+    patternManager.setPartitioningFunc((category) => {
+      let left = 0;
+      let right = newPoints.length - 1;
+
+      while (left < right) {
+        if (newPoints[left][2] !== category) left += 1;
+        if (newPoints[right][2] === category) right -= 1;
+
+        if (newPoints[left][2] === category && newPoints[right][2] !== category) {
+          const temp = newPoints[left];
+          newPoints[left] = newPoints[right];
+          newPoints[right] = temp;
+        }
+      }
+
+      stateTex = createStateTexture(newPoints);
+    });
   };
 
   const draw = (time, showRecticleOnce = false) => {
