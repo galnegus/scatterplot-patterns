@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.js": "/scatterplot-patterns/static/js/main.48b9f8f2.chunk.js",
-    "main.js.map": "/scatterplot-patterns/static/js/main.48b9f8f2.chunk.js.map",
+    "main.js": "/scatterplot-patterns/static/js/main.ad0f95b4.chunk.js",
+    "main.js.map": "/scatterplot-patterns/static/js/main.ad0f95b4.chunk.js.map",
     "runtime-main.js": "/scatterplot-patterns/static/js/runtime-main.6cb4bd38.js",
     "runtime-main.js.map": "/scatterplot-patterns/static/js/runtime-main.6cb4bd38.js.map",
-    "static/js/2.9ad4b99f.chunk.js": "/scatterplot-patterns/static/js/2.9ad4b99f.chunk.js",
-    "static/js/2.9ad4b99f.chunk.js.map": "/scatterplot-patterns/static/js/2.9ad4b99f.chunk.js.map",
+    "static/js/2.1d7abd27.chunk.js": "/scatterplot-patterns/static/js/2.1d7abd27.chunk.js",
+    "static/js/2.1d7abd27.chunk.js.map": "/scatterplot-patterns/static/js/2.1d7abd27.chunk.js.map",
     "index.html": "/scatterplot-patterns/index.html",
-    "precache-manifest.cbf5eadb9ac6795579836714cf9b2b86.js": "/scatterplot-patterns/precache-manifest.cbf5eadb9ac6795579836714cf9b2b86.js",
+    "precache-manifest.013692fa57aa31c95c8cc195bc0e8a2e.js": "/scatterplot-patterns/precache-manifest.013692fa57aa31c95c8cc195bc0e8a2e.js",
     "service-worker.js": "/scatterplot-patterns/service-worker.js",
-    "static/js/2.9ad4b99f.chunk.js.LICENSE.txt": "/scatterplot-patterns/static/js/2.9ad4b99f.chunk.js.LICENSE.txt"
+    "static/js/2.1d7abd27.chunk.js.LICENSE.txt": "/scatterplot-patterns/static/js/2.1d7abd27.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.6cb4bd38.js",
-    "static/js/2.9ad4b99f.chunk.js",
-    "static/js/main.48b9f8f2.chunk.js"
+    "static/js/2.1d7abd27.chunk.js",
+    "static/js/main.ad0f95b4.chunk.js"
   ]
 }
