@@ -177,7 +177,7 @@ export default function DataLoader({ scatterplot }) {
       />
 
       <div className="data-add-new">
-        <Button intent={Intent.PRIMARY} onClick={loadClickHandler}>
+        <Button onClick={loadClickHandler} fill={true}>
           Load data
         </Button>
       </div>

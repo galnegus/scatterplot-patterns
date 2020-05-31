@@ -1,10 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Divider, Button, Intent } from '@blueprintjs/core';
+import { Divider, Button } from '@blueprintjs/core';
+import { saveAs } from 'file-saver';
 import dataGen from './dataGen';
 import ClusterOptions from './ClusterOptions';
 import { setMaxCategories } from './actions';
 import DataLoader from './DataLoader';
+import computeOverlap from './computeOverlap';
+
+function renderPercentage(val) {
+  return `${Math.round(val * 100)}%`;
+}
 
 // sigma ~ x radius
 // amplitude ~ y radius
@@ -36,12 +42,18 @@ export default function DataOptions({ scatterplot }) {
     1: defaultCluster(0),
     2: defaultCluster(1)
   });
+  const lastData = useRef(null);
   const dispatch = useDispatch();
+  
+  const overlap = computeOverlap(Object.keys(clusters).map((key) => clusters[key]));
 
   useEffect(() => {
     if (scatterplot !== null) {
-      scatterplot.draw(Object.keys(clusters).map((clusterKey) => dataGen(clusters[clusterKey]))
-        .reduce((acc, curr) => acc.concat(curr), []));
+      const data = Object.keys(clusters).map((clusterKey) => dataGen(clusters[clusterKey]))
+        .reduce((acc, curr) => acc.concat(curr), []);
+
+      lastData.current = data;
+      scatterplot.draw(data);
       dispatch(setMaxCategories(Math.max(...Object.keys(clusters).map((clusterKey) => clusters[clusterKey].category)) + 1));
     }
   }, [scatterplot, clusters])
@@ -73,6 +85,26 @@ export default function DataOptions({ scatterplot }) {
   }
 
   const addClickHandler = () => addCluster(unusedCategory());
+  const exportClickHandler = () => {
+    const nPoints = Object.keys(clusters).reduce((sum, key) => sum + clusters[key].n, 0);
+    const nClusters = Object.keys(clusters).length;
+
+    const res = {
+      data: lastData.current,
+      meta: {
+        nPoints,
+        nClusters,
+        overlap
+      },
+    };
+
+    const filename = `c${nClusters}_n${nPoints}.json`;
+    const jsonFile = new Blob([JSON.stringify(res, null, 2)], {
+      type: 'application/json',
+    });
+
+    saveAs(jsonFile, filename);
+  };
 
   const renderClusterOptions = Object.keys(clusters).map((clusterKey) => (
     <ClusterOptions
@@ -87,13 +119,25 @@ export default function DataOptions({ scatterplot }) {
   return (
     <div>
       <Divider />
+      <span className="option-title bp3-text-muted">GENERATE DATA</span>
       <p className="bp3-text-muted" style={{ textAlign: 'center' }}>
         Click on a cluster to show/hide options.
       </p>
       {renderClusterOptions}
-      <div className="data-add-new">
-        <Button intent={Intent.PRIMARY} onClick={addClickHandler}>
+
+      <p className="overlap">
+        <strong>Overlap:</strong>
+        {renderPercentage(overlap)}
+      </p>
+
+      <div className="data-button">
+        <Button onClick={addClickHandler} fill={true}>
           Add cluster
+        </Button>
+      </div>
+      <div className="data-button">
+        <Button onClick={exportClickHandler} fill={true}>
+          Export data (JSON)
         </Button>
       </div>
 
@@ -103,9 +147,18 @@ export default function DataOptions({ scatterplot }) {
       <DataLoader scatterplot={scatterplot} />
 
       <style jsx>{`
-        .data-add-new {
+        .data-button {
           margin: 10px 0;
           text-align: center;
+        }
+
+        .overlap {
+          margin-bottom: 10px;
+          text-align: center;
+        }
+
+        .overlap strong {
+          margin-right: 5px;
         }
       `}</style>
     </div>

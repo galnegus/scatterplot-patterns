@@ -123,7 +123,7 @@ export default function ClusterOptions({ clusterKey, cluster, setCluster, remove
           />
         </FormGroup>
         <div className="cluster-remove">
-          <Button intent={Intent.DANGER} onClick={removeClickHandler}>
+          <Button intent={Intent.DANGER} onClick={removeClickHandler} fill={true}>
             Remove this cluster
           </Button>
         </div>
