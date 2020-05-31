@@ -19,7 +19,7 @@
     "glslify": "^7.0.0",
     "glslify-loader": "^2.0.0",
     "kdbush": "~3.0.0",
-    "lodash-es": "^4.17.15",
+    "lodash": "^4.17.15",
     "papaparse": "^5.1.1",
     "pub-sub-es": "^1.2.1",
     "react": "^16.12.0",

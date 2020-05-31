@@ -1,14 +1,14 @@
 import createDom2dCamera from './camera';
 import KDBush from 'kdbush';
 import createPubSub from 'pub-sub-es';
-import withThrottle from 'lodash-es/throttle';
+import withThrottle from 'lodash/throttle';
 import withRaf from 'with-raf';
 import { mat4, vec4 } from 'gl-matrix';
 import createLine from 'regl-line';
 import GLBench from 'gl-bench/dist/gl-bench';
-import _groupBy from 'lodash-es/groupBy';
-import _has from 'lodash-es/has';
-import _mapValues from 'lodash-es/mapValues';
+import _groupBy from 'lodash/groupBy';
+import _has from 'lodash/has';
+import _mapValues from 'lodash/mapValues';
 
 import BG_FS from './bg.frag';
 import BG_VS from './bg.vert';

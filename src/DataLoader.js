@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FormGroup, HTMLSelect, Divider, Button, Intent, FileInput } from '@blueprintjs/core';
+import { FormGroup, HTMLSelect, Divider, Button, FileInput } from '@blueprintjs/core';
 import { useDispatch } from 'react-redux';
 import { setLoading, setMaxCategories } from './actions';
 import Diamonds from './data/Diamonds';

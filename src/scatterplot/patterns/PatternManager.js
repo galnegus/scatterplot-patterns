@@ -1,4 +1,4 @@
-import _has from 'lodash-es/has';
+import _has from 'lodash/has';
 import createPlainDraw from './plain';
 import createPulseDraw from './pulse';
 import createRadarDraw from './radar';

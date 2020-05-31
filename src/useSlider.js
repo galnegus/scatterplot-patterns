@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import _throttle from 'lodash-es/throttle';
-import _isFunction from 'lodash-es/isFunction';
+import _throttle from 'lodash/throttle';
+import _isFunction from 'lodash/isFunction';
 import { throttleTime } from './constants';
 
 //const updateValue = _debounce((set, optionName, newValue) => set({ [optionName]: newValue }), debounceTime);
