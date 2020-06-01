@@ -99,10 +99,10 @@ export default function ClusterOptions({ clusterKey, cluster, setCluster, remove
           inline={true}
         >
           <Slider
-            stepSize={10}
-            min={1}
-            max={10000}
-            labelStepSize={9999}
+            stepSize={1}
+            min={30}
+            max={4000}
+            labelStepSize={3970}
             value={n}
             onChange={nChange}
             fill={true}

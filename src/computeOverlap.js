@@ -1,16 +1,13 @@
 import pointInEllipse from './pointInEllipse';
 
 function pointInCluster(px, py, { x: cx, y: cy, sigma, angle, amplitude }) {
-  const rx = sigma * amplitude;
-  const ry = sigma;
+  const rx = 2 * sigma * amplitude;
+  const ry = 2 * sigma;
 
   return pointInEllipse(px, py, cx, cy, rx, ry, angle);
 }
 
 export default function computeOverlap(clusters) {
-  //const clusterArea = new Array(clusters.length).fill(0);
-  //const clusterOverlap = new Array(clusters.length).fill(0);
-  
   let area = 0;
   let overlap = 0;
 
@@ -23,21 +20,6 @@ export default function computeOverlap(clusters) {
 
       area += count;
       if (count > 1) overlap += count;
-
-      // The code above does the same thing as the commented out code below, just a bit faster
-      /*
-      const clusterIndicesFound = clusters.reduce((acc, cluster, index) => {
-        if (pointInCluster(px, py, cluster)) acc.push(index);
-        return acc;
-      }, []);
-
-      const hasOverlap = clusterIndicesFound.length > 1;
-
-      clusterIndicesFound.forEach((index) => {
-        clusterArea[index] += 1;
-        if (hasOverlap) clusterOverlap[index] += 1;
-      });
-      */
     }
   }
 

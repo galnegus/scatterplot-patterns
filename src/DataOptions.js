@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Divider, Button } from '@blueprintjs/core';
+import { Divider, Button, NumericInput } from '@blueprintjs/core';
 import { saveAs } from 'file-saver';
 import dataGen from './dataGen';
 import ClusterOptions from './ClusterOptions';
@@ -10,6 +10,20 @@ import computeOverlap from './computeOverlap';
 
 function renderPercentage(val) {
   return `${Math.round(val * 100)}%`;
+}
+
+function distributePoints(n, k) {
+  const step = n / k;
+  const res = [];
+
+  let prev = 0;
+  for (let i = 1; i <= k; ++i) {
+    const curr = Math.round(i * step);
+    res.push(curr - prev);
+    prev = curr;
+  }
+
+  return res;
 }
 
 // sigma ~ x radius
@@ -42,6 +56,7 @@ export default function DataOptions({ scatterplot }) {
     1: defaultCluster(0),
     2: defaultCluster(1)
   });
+  const [nPointsInput, setNPointsInput] = useState(NumericInput.VALUE_EMPTY);
   const lastData = useRef(null);
   const dispatch = useDispatch();
   
@@ -84,6 +99,24 @@ export default function DataOptions({ scatterplot }) {
     return 0;
   }
 
+  const handlePointsValueChange = (value) => {
+    if (!isNaN(value))
+      setNPointsInput(value);
+    else
+      setNPointsInput(nPointsInput);
+  };
+  const nPointsClickHandler = () => {
+    setClusters((oldClusters) => {
+      const newClusters = {};
+      const points = distributePoints(nPointsInput, Object.keys(oldClusters).length);
+      Object.keys(oldClusters).forEach((key, i) => {
+        const oldCluster = oldClusters[key];
+        const newCluster = { ...oldCluster, n: points[i] };
+        newClusters[key] = newCluster;
+      });
+      return newClusters;
+    });
+  };
   const addClickHandler = () => addCluster(unusedCategory());
   const exportClickHandler = () => {
     const nPoints = Object.keys(clusters).reduce((sum, key) => sum + clusters[key].n, 0);
@@ -130,6 +163,23 @@ export default function DataOptions({ scatterplot }) {
         {renderPercentage(overlap)}
       </p>
 
+      <div className="points-input">
+        <div className="points-input__number-wrapper">
+          <NumericInput
+            buttonPosition="left"
+            placeholder="Force number of points"
+            fill={true}
+            value={nPointsInput}
+            onValueChange={handlePointsValueChange}
+            min={10}
+            max={10000}
+          />
+        </div>
+        <Button onClick={nPointsClickHandler}>
+          Go
+        </Button>
+      </div>
+
       <div className="data-button">
         <Button onClick={addClickHandler} fill={true}>
           Add cluster
@@ -159,6 +209,14 @@ export default function DataOptions({ scatterplot }) {
 
         .overlap strong {
           margin-right: 5px;
+        }
+
+        .points-input {
+          display: flex;
+        }
+
+        .points-input__number-wrapper {
+          margin-right: 10px;
         }
       `}</style>
     </div>
