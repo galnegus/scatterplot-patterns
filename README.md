@@ -2,7 +2,7 @@
 
 Play around with Animated Scatterplot Patterns!
 
-![conc-1](https://user-images.githubusercontent.com/5460138/142469490-aa0faad7-2a86-4c25-8c81-06fb3174c01a.gif)
+![patterns](https://user-images.githubusercontent.com/5460138/142469623-a6344332-51fd-4eae-98ce-5072f0681ea1.gif)
 
 **Check it out:** https://galnegus.github.io/scatterplot-patterns/
 
