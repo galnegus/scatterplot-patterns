@@ -12,7 +12,7 @@
     "camera-2d-simple": "^2.0.1",
     "dom-2d-camera": "~1.0.0-rc.5",
     "file-saver": "^2.0.2",
-    "gh-pages": "^2.1.1",
+    "gh-pages": "^5.0.0",
     "gl-bench": "^0.3.68",
     "gl-matrix": "~3.1.0",
     "glsl-conditionals": "^1.0.0",
